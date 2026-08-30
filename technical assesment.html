@@ -1,0 +1,305 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Technical Assessment | Student Placement Portal</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<!-- CSS -->
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a class="navbar-brand"
+           href="{{ url_for('dashboard') }}">
+
+            Student Placement Portal
+
+        </a>
+
+
+        <div class="collapse navbar-collapse show">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{{ url_for('dashboard') }}">
+
+                        Dashboard
+
+                    </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link"
+                       href="{{ url_for('logout') }}">
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= HEADER ================= -->
+
+<section class="page-header">
+
+    <div class="container">
+
+        <h1>
+
+            Technical Assessment
+
+        </h1>
+
+
+        <p>
+
+            Test your programming and technical knowledge.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= ASSESSMENT ================= -->
+
+<section class="academic-section">
+
+    <div class="container">
+
+        <div class="academic-container">
+
+
+            <h2>
+
+                <i class="bi bi-code-slash"></i>
+
+                Technical Skill Test
+
+            </h2>
+
+
+            <p class="section-text">
+
+                Answer all 10 questions carefully to evaluate your technical skills.
+
+            </p>
+
+
+
+            <!-- ================= FORM ================= -->
+
+            <form action="{{ url_for('technical') }}"
+                  method="POST">
+
+
+                {% for q in questions %}
+
+
+                <div class="assessment-section">
+
+                    <div class="question-card">
+
+
+                        <!-- QUESTION -->
+
+                        <h5>
+
+                            <i class="bi bi-question-circle-fill"></i>
+
+                            {{ loop.index }}. {{ q[2] }}
+
+                        </h5>
+
+
+                        <!-- CATEGORY -->
+
+                        <p class="question-category">
+
+                            Category: {{ q[1] }}
+
+                        </p>
+
+
+
+                        <!-- OPTION A -->
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="q{{ q[0] }}"
+                                value="A"
+                                required>
+
+                            <span>
+
+                                {{ q[3] }}
+
+                            </span>
+
+                        </label>
+
+
+
+                        <!-- OPTION B -->
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="q{{ q[0] }}"
+                                value="B">
+
+                            <span>
+
+                                {{ q[4] }}
+
+                            </span>
+
+                        </label>
+
+
+
+                        <!-- OPTION C -->
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="q{{ q[0] }}"
+                                value="C">
+
+                            <span>
+
+                                {{ q[5] }}
+
+                            </span>
+
+                        </label>
+
+
+
+                        <!-- OPTION D -->
+
+                        <label class="radio-option">
+
+                            <input
+                                type="radio"
+                                name="q{{ q[0] }}"
+                                value="D">
+
+                            <span>
+
+                                {{ q[6] }}
+
+                            </span>
+
+                        </label>
+
+
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit"
+                        class="continue-btn">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                    Submit Assessment
+
+                </button>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+
+        Empowering Students. Enhancing Careers.
+
+    </p>
+
+
+    <p>
+
+        © 2026 Student Placement Portal. All Rights Reserved.
+
+    </p>
+
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
+```
