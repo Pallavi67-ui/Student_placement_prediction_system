@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptitude Assessment | Student Placement Portal</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Unified CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <i class="bi bi-mortarboard-fill"></i>
+                Student Placement Portal
+            </a>
+
+            <div class="collapse navbar-collapse show">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HEADER ================= -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Aptitude Assessment</h1>
+            <p>
+                Step 5 of the Placement Readiness Evaluation. Evaluate your quantitative agility, logical reasoning, and problem-solving skills.
+            </p>
+        </div>
+    </section>
+
+    <!-- ================= MAIN SECTION ================= -->
+    <section class="academic-section">
+        <div class="container">
+            <div class="assessment-container">
+
+                <!-- WORKFLOW STEP INDICATOR -->
+                <div class="workflow-badge-bar">
+                    <span class="workflow-step-pill completed">
+                        <i class="bi bi-check-circle-fill"></i> Academic Details
+                    </span>
+                    <span class="workflow-step-pill completed">
+                        <i class="bi bi-check-circle-fill"></i> Certification Verification
+                    </span>
+                    <span class="workflow-step-pill completed">
+                        <i class="bi bi-check-circle-fill"></i> Communication Test
+                    </span>
+                    <span class="workflow-step-pill completed">
+                        <i class="bi bi-check-circle-fill"></i> Technical Test
+                    </span>
+                    <span class="workflow-step-pill active">
+                        <i class="bi bi-5-circle-fill"></i> Aptitude Test
+                    </span>
+                    <span class="workflow-step-pill">
+                        <i class="bi bi-6-circle"></i> Final Prediction
+                    </span>
+                </div>
+
+                <!-- META BAR -->
+                <div class="assessment-meta-bar">
+                    <div class="assessment-meta-item">
+                        <i class="bi bi-calculator-fill"></i>
+                        <span>Section: <strong>Quantitative & Logical Reasoning</strong></span>
+                    </div>
+                    <div class="assessment-meta-item">
+                        <i class="bi bi-list-ol"></i>
+                        <span>Total Questions: <strong>{{ questions|length }}</strong></span>
+                    </div>
+                    <div class="assessment-meta-item">
+                        <i class="bi bi-award-fill text-warning"></i>
+                        <span>Weight: <strong>30% of Rule-Based Profile Score</strong></span>
+                    </div>
+                </div>
+
+                <!-- FORM -->
+                <form action="{{ url_for('aptitude_assessment') }}" method="POST" id="aptForm">
+
+                    {% for q in questions %}
+                    <div class="question-card" id="qcard_{{ q[0] }}">
+                        <div class="question-header">
+                            <span class="question-badge">
+                                Question {{ loop.index }} of {{ questions|length }}
+                            </span>
+                            <span class="category-tag">
+                                <i class="bi bi-lightbulb-fill me-1"></i>{{ q[7] if q|length > 7 else 'Aptitude' }}
+                            </span>
+                        </div>
+
+                        <div class="question-title">
+                            {{ q[1] }}
+                        </div>
+
+                        <div class="options-grid">
+                            <!-- OPTION A -->
+                            <label class="radio-option-card">
+                                <input type="radio" name="q{{ q[0] }}" value="A">
+                                <span class="option-key">A.</span>
+                                <span class="option-text">{{ q[2] }}</span>
+                            </label>
+
+                            <!-- OPTION B -->
+                            <label class="radio-option-card">
+                                <input type="radio" name="q{{ q[0] }}" value="B">
+                                <span class="option-key">B.</span>
+                                <span class="option-text">{{ q[3] }}</span>
+                            </label>
+
+                            <!-- OPTION C -->
+                            <label class="radio-option-card">
+                                <input type="radio" name="q{{ q[0] }}" value="C">
+                                <span class="option-key">C.</span>
+                                <span class="option-text">{{ q[4] }}</span>
+                            </label>
+
+                            <!-- OPTION D -->
+                            <label class="radio-option-card">
+                                <input type="radio" name="q{{ q[0] }}" value="D">
+                                <span class="option-key">D.</span>
+                                <span class="option-text">{{ q[5] }}</span>
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- BOTTOM ACTIONS -->
+                    <div class="assessment-actions">
+                        <div class="left-actions">
+                            <a href="{{ url_for('skip_aptitude_assessment') }}" class="btn-skip">
+                                <i class="bi bi-skip-forward-fill"></i> Skip Assessment
+                            </a>
+                        </div>
+                        <div class="right-actions">
+                            <button type="submit" class="continue-btn" id="submitBtn">
+                                <i class="bi bi-check-circle-fill me-1"></i> Submit Aptitude & View Prediction
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p>Empowering Students. Enhancing Careers.</p>
+        <p>© 2026 Student Placement Prediction Portal. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('aptForm');
+            const totalQuestions = {{ questions|length }};
+
+            // Highlight selected option
+            const radioOptions = document.querySelectorAll('.radio-option-card input[type="radio"]');
+            radioOptions.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const parentCard = this.closest('.question-card');
+                    parentCard.querySelectorAll('.radio-option-card').forEach(opt => opt.classList.remove('selected'));
+                    this.closest('.radio-option-card').classList.add('selected');
+                });
+            });
+
+            // Form validation before submit
+            form.addEventListener('submit', function(e) {
+                let answeredCount = 0;
+                const questionCards = document.querySelectorAll('.question-card');
+
+                questionCards.forEach(card => {
+                    const checked = card.querySelector('input[type="radio"]:checked');
+                    if (checked) {
+                        answeredCount++;
+                    }
+                });
+
+                if (answeredCount < totalQuestions) {
+                    const confirmProceed = confirm(
+                        `You have answered ${answeredCount} of ${totalQuestions} aptitude questions. Do you want to submit? (Unanswered questions will be counted as incorrect)`
+                    );
+                    if (!confirmProceed) {
+                        e.preventDefault();
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
