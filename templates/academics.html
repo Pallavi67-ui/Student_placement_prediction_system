@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Academic Details | Student Placement Portal</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Theme Stylesheet -->
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg">
+
+        <div class="container">
+
+            <a class="navbar-brand"
+               href="{{ url_for('dashboard') }}">
+
+                <i class="bi bi-mortarboard-fill"></i>
+
+                Student Placement Portal
+
+            </a>
+
+
+            <div class="collapse navbar-collapse show">
+
+                <ul class="navbar-nav ms-auto align-items-center">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ url_for('dashboard') }}">
+
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link active"
+                           href="{{ url_for('academics') }}">
+
+                            <i class="bi bi-book"></i>
+                            Academic Details
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ url_for('company_selection') }}">
+
+                            <i class="bi bi-building"></i>
+                            Company Prep
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ url_for('logout') }}">
+
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="page-header">
+
+        <div class="container">
+
+            <h1>
+                Academic & Profile Details
+            </h1>
+
+            <p>
+                Step 1 of the Placement Readiness Evaluation.
+                Enter your academic grades, projects, and internship experience.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= MAIN FORM CONTAINER ================= -->
+
+    <section class="academic-section">
+
+        <div class="container">
+
+            <div class="academic-container">
+
+
+                <!-- ================= WORKFLOW STEP INDICATOR ================= -->
+
+                <div class="workflow-badge-bar">
+
+
+                    <span class="workflow-step-pill active">
+
+                        <i class="bi bi-1-circle-fill"></i>
+
+                        Academic Details
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-2-circle"></i>
+
+                        Certifications
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-3-circle"></i>
+
+                        Communication Test
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-4-circle"></i>
+
+                        Technical Test
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-5-circle"></i>
+
+                        Aptitude Test
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-6-circle"></i>
+
+                        Final Prediction
+
+                    </span>
+
+                </div>
+
+
+
+                <!-- ================= FORM ================= -->
+
+                <form action="{{ url_for('academics') }}"
+                      method="POST"
+                      enctype="multipart/form-data"
+                      id="academicsForm">
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="error-box mb-4">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+
+                    <!-- ================= 1. ACADEMIC PERFORMANCE ================= -->
+
+                    <h4 class="mb-4 pb-2 border-bottom"
+                        style="color: var(--gold-bright);
+                               border-color: var(--border-gold) !important;
+                               font-family: 'Space Grotesk', sans-serif;">
+
+                        <i class="bi bi-mortarboard me-2"></i>
+
+                        1. Academic Performance
+
+                    </h4>
+
+
+
+                    <div class="form-grid mb-4">
+
+
+                        <!-- SEMESTER -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="semester">
+
+                                Current Semester
+
+                            </label>
+
+
+                            <select id="semester"
+                                    name="semester"
+                                    class="form-select"
+                                    required>
+
+                                {% for s in range(1, 9) %}
+
+                                <option value="{{ s }}"
+                                    {% if academic and academic[0] == s %}selected{% endif %}>
+
+                                    Semester {{ s }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- SGPA -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="sgpa">
+
+                                Current Semester SGPA (0.0 - 10.0)
+
+                            </label>
+
+
+                            <input type="number"
+                                   step="0.01"
+                                   min="0"
+                                   max="10"
+                                   id="sgpa"
+                                   name="sgpa"
+                                   class="form-control"
+                                   value="{{ academic[1] if academic else '' }}"
+                                   placeholder="e.g. 8.45"
+                                   required>
+
+                        </div>
+
+
+
+                        <!-- CGPA -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="cgpa">
+
+                                Cumulative CGPA (0.0 - 10.0)
+
+                            </label>
+
+
+                            <input type="number"
+                                   step="0.01"
+                                   min="0"
+                                   max="10"
+                                   id="cgpa"
+                                   name="cgpa"
+                                   class="form-control"
+                                   value="{{ academic[3] if academic else '' }}"
+                                   placeholder="e.g. 8.20"
+                                   required>
+
+                        </div>
+
+
+
+                        <!-- PREVIOUS SEMESTER -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="prev_sem">
+
+                                Previous Semester / 12th Percentage (%)
+
+                            </label>
+
+
+                            <input type="number"
+                                   step="0.01"
+                                   min="0"
+                                   max="100"
+                                   id="prev_sem"
+                                   name="prev_sem"
+                                   class="form-control"
+                                   value="{{ academic[2] if academic else '' }}"
+                                   placeholder="e.g. 82.5"
+                                   required>
+
+                        </div>
+
+
+
+                        <!-- BACKLOGS -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="backlogs">
+
+                                Active Backlogs
+
+                            </label>
+
+
+                            <input type="number"
+                                   min="0"
+                                   max="20"
+                                   id="backlogs"
+                                   name="backlogs"
+                                   class="form-control"
+                                   value="{{ academic[4] if academic else '0' }}"
+                                   required>
+
+                        </div>
+
+
+
+                        <!-- PROJECTS -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="projects">
+
+                                Projects Completed
+
+                            </label>
+
+
+                            <input type="number"
+                                   min="0"
+                                   max="20"
+                                   id="projects"
+                                   name="projects"
+                                   class="form-control"
+                                   value="{{ academic[6] if academic else '1' }}"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= 2. INTERNSHIP ================= -->
+
+                    <h4 class="mb-4 pb-2 border-bottom"
+                        style="color: var(--gold-bright);
+                               border-color: var(--border-gold) !important;
+                               font-family: 'Space Grotesk', sans-serif;">
+
+                        <i class="bi bi-briefcase me-2"></i>
+
+                        2. Internship & Practical Exposure
+
+                    </h4>
+
+
+
+                    <div class="form-grid mb-4">
+
+
+                        <!-- INTERNSHIP -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="internship">
+
+                                Internship Completed?
+
+                            </label>
+
+
+                            <select id="internship"
+                                    name="internship"
+                                    class="form-select"
+                                    required>
+
+                                <option value="Yes"
+                                    {% if academic and academic[5] == 'Yes' %}selected{% endif %}>
+
+                                    Yes
+
+                                </option>
+
+
+                                <option value="No"
+                                    {% if not academic or academic[5] == 'No' %}selected{% endif %}>
+
+                                    No
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- COMPANY -->
+
+                        <div id="companyField">
+
+                            <label class="form-label"
+                                   for="company_name">
+
+                                Company / Organization Name
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            <input type="text"
+                                   id="company_name"
+                                   name="company_name"
+                                   class="form-control"
+                                   value="{{ academic[10] if academic else '' }}"
+                                   placeholder="e.g. TCS, Infosys, Startup or N/A">
+
+                        </div>
+
+
+
+                        <!-- DOMAIN -->
+
+                        <div id="domainField">
+
+                            <label class="form-label"
+                                   for="internship_domain">
+
+                                Internship Domain
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            <input type="text"
+                                   id="internship_domain"
+                                   name="internship_domain"
+                                   class="form-control"
+                                   value="{{ academic[11] if academic else '' }}"
+                                   placeholder="e.g. Web Development, Machine Learning">
+
+                        </div>
+
+
+
+                        <!-- DURATION -->
+
+                        <div id="durationField">
+
+                            <label class="form-label"
+                                   for="internship_duration">
+
+                                Duration
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            <input type="text"
+                                   id="internship_duration"
+                                   name="internship_duration"
+                                   class="form-control"
+                                   value="{{ academic[12] if academic else '' }}"
+                                   placeholder="e.g. 2 Months, 6 Months">
+
+                        </div>
+
+
+
+                        <!-- ================= INTERNSHIP PDF ================= -->
+
+                        <div id="internshipProofField">
+
+                            <label class="form-label"
+                                   for="internship_proof">
+
+                                Internship Certificate / Proof
+
+                                <span class="text-danger">*</span>
+
+                            </label>
+
+
+                            <input type="file"
+                                   id="internship_proof"
+                                   name="internship_proof"
+                                   class="form-control"
+                                   accept=".pdf,application/pdf">
+
+
+                            <small class="text-secondary"
+                                   style="font-size: 12px;">
+
+                                <i class="bi bi-file-earmark-pdf me-1"></i>
+
+                                Upload your internship certificate or proof
+                                in PDF format only.
+
+                            </small>
+
+
+                            <!-- EXISTING PROOF -->
+
+                            {% if academic and academic[13] %}
+
+                            <div class="mt-2 p-2 rounded"
+                                 style="background: rgba(212, 175, 55, 0.08);
+                                        border: 1px solid var(--border-gold);">
+
+
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+
+
+                                    <div>
+
+                                        <i class="bi bi-file-earmark-pdf-fill text-danger me-1"></i>
+
+                                        <span style="font-size: 13px; color: var(--text);">
+
+                                            Internship Proof:
+
+                                            <strong>Uploaded</strong>
+
+                                        </span>
+
+
+                                        <a href="{{ url_for('student_view_internship') }}"
+                                           target="_blank"
+                                           class="ms-2"
+                                           style="font-size: 12px;
+                                                  color: var(--gold-bright);
+                                                  text-decoration: underline;">
+
+                                            <i class="bi bi-box-arrow-up-right me-1"></i>
+
+                                            View Current PDF
+
+                                        </a>
+
+                                    </div>
+
+
+                                    <!-- STATUS -->
+
+                                    <div>
+
+                                        {% if academic[14] == 'Verified' %}
+
+                                            <span class="badge bg-success"
+                                                  style="font-size: 12px;">
+
+                                                <i class="bi bi-check-circle me-1"></i>
+
+                                                Status: Verified
+
+                                            </span>
+
+
+                                        {% elif academic[14] == 'Rejected' %}
+
+                                            <span class="badge bg-danger"
+                                                  style="font-size: 12px;">
+
+                                                <i class="bi bi-x-circle me-1"></i>
+
+                                                Status: Rejected
+
+                                            </span>
+
+
+                                        {% else %}
+
+                                            <span class="badge bg-warning text-dark"
+                                                  style="font-size: 12px;">
+
+                                                <i class="bi bi-clock me-1"></i>
+
+                                                Status: Pending
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="mt-1"
+                                     style="font-size: 11px;
+                                            color: var(--muted-text);">
+
+                                    <i class="bi bi-info-circle me-1"></i>
+
+                                    Uploading a new PDF file will replace your
+                                    existing proof and reset verification to Pending.
+
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- INTERNSHIP INFORMATION -->
+
+                    <div id="internshipInfoMessage"
+                         class="mb-4 p-3 rounded"
+                         style="background: rgba(212, 175, 55, 0.06);
+                                border: 1px solid rgba(212, 175, 55, 0.15);
+                                font-size: 13px;">
+
+                        <i class="bi bi-info-circle me-2"
+                           style="color: var(--gold-bright);"></i>
+
+                        If you have completed an internship, provide the
+                        internship details and upload the certificate/proof.
+                        The document will be reviewed by the administrator.
+
+                    </div>
+
+
+
+                    <!-- ================= 3. ADDITIONAL METRICS ================= -->
+
+                    <h4 class="mb-4 pb-2 border-bottom"
+                        style="color: var(--gold-bright);
+                               border-color: var(--border-gold) !important;
+                               font-family: 'Space Grotesk', sans-serif;">
+
+                        <i class="bi bi-trophy me-2"></i>
+
+                        3. Additional Metrics
+
+                    </h4>
+
+
+
+                    <div class="form-grid mb-4">
+
+
+                        <!-- ================= EXTRA CURRICULAR ================= -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="extra_curr">
+
+                                Extracurricular Activity Level
+
+                            </label>
+
+
+                            <select id="extra_curr"
+                                    name="extra_curr"
+                                    class="form-select"
+                                    required>
+
+                                <option value=""
+                                        disabled
+                                        {% if not academic %}selected{% endif %}>
+
+                                    Select your participation level
+
+                                </option>
+
+
+                                <option value="0"
+                                    {% if academic and academic[7] == 0 %}selected{% endif %}>
+
+                                    No Participation
+
+                                </option>
+
+
+                                <option value="3"
+                                    {% if academic and academic[7] == 3 %}selected{% endif %}>
+
+                                    College-level Participation
+
+                                </option>
+
+
+                                <option value="5"
+                                    {% if academic and academic[7] == 5 %}selected{% endif %}>
+
+                                    College-level Achievement
+
+                                </option>
+
+
+                                <option value="6"
+                                    {% if academic and academic[7] == 6 %}selected{% endif %}>
+
+                                    University-level Participation
+
+                                </option>
+
+
+                                <option value="7"
+                                    {% if academic and academic[7] == 7 %}selected{% endif %}>
+
+                                    University-level Achievement
+
+                                </option>
+
+
+                                <option value="8"
+                                    {% if academic and academic[7] == 8 %}selected{% endif %}>
+
+                                    State-level Participation
+
+                                </option>
+
+
+                                <option value="9"
+                                    {% if academic and academic[7] == 9 %}selected{% endif %}>
+
+                                    State-level Achievement
+
+                                </option>
+
+
+                                <option value="10"
+                                    {% if academic and academic[7] == 10 %}selected{% endif %}>
+
+                                    National-level Achievement
+
+                                </option>
+
+                            </select>
+
+
+                            <small class="text-secondary"
+                                   style="font-size: 12px;">
+
+                                Select the highest level of participation
+                                or achievement.
+
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- ================= BASELINE APTITUDE ================= -->
+
+                        <div>
+
+                            <label class="form-label"
+                                   for="aptitude">
+
+                                Baseline Self-Aptitude Rating
+
+                            </label>
+
+
+                            <select id="aptitude"
+                                    name="aptitude"
+                                    class="form-select"
+                                    required>
+
+                                <option value=""
+                                        disabled
+                                        {% if not academic %}selected{% endif %}>
+
+                                    Select your self-rating
+
+                                </option>
+
+
+                                <option value="20"
+                                    {% if academic and academic[9] == 20 %}selected{% endif %}>
+
+                                    Beginner
+
+                                </option>
+
+
+                                <option value="40"
+                                    {% if academic and academic[9] == 40 %}selected{% endif %}>
+
+                                    Basic
+
+                                </option>
+
+
+                                <option value="60"
+                                    {% if academic and academic[9] == 60 %}selected{% endif %}>
+
+                                    Average
+
+                                </option>
+
+
+                                <option value="80"
+                                    {% if academic and academic[9] == 80 %}selected{% endif %}>
+
+                                    Good
+
+                                </option>
+
+
+                                <option value="100"
+                                    {% if academic and academic[9] == 100 %}selected{% endif %}>
+
+                                    Excellent
+
+                                </option>
+
+                            </select>
+
+
+                            <small class="text-secondary"
+                                   style="font-size: 12px;">
+
+                                This is your self-assessment.
+                                Your actual aptitude will be evaluated separately.
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ================= SAVE BUTTON ================= -->
+
+                    <div class="text-end mt-4 pt-3 border-top"
+                         style="border-color: rgba(212, 175, 55, 0.15) !important;">
+
+                        <button type="submit"
+                                class="btn-main px-5 py-3"
+                                style="font-size: 16px;">
+
+                            Save & Proceed to Certifications
+
+                            <i class="bi bi-arrow-right ms-2"></i>
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="container">
+
+            <p>
+                © 2026 Student Placement Portal. All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+    <!-- ================= INTERNSHIP DYNAMIC BEHAVIOR ================= -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const internshipSelect =
+                document.getElementById("internship");
+
+            const companyField =
+                document.getElementById("companyField");
+
+            const domainField =
+                document.getElementById("domainField");
+
+            const durationField =
+                document.getElementById("durationField");
+
+            const internshipProofField =
+                document.getElementById("internshipProofField");
+
+            const companyInput =
+                document.getElementById("company_name");
+
+            const domainInput =
+                document.getElementById("internship_domain");
+
+            const durationInput =
+                document.getElementById("internship_duration");
+
+            const proofInput =
+                document.getElementById("internship_proof");
+
+            const form =
+                document.getElementById("academicsForm");
+
+
+            /*
+             * This value is true when a previous internship
+             * certificate already exists in the database.
+             */
+            const hasExistingProof =
+                {{ 'true' if academic and academic[13] else 'false' }};
+
+
+            /*
+             * Show / hide internship fields
+             */
+            function updateInternshipFields() {
+
+                const hasInternship =
+                    internshipSelect.value === "Yes";
+
+
+                if (hasInternship) {
+
+                    /* Show fields */
+
+                    companyField.style.display = "";
+                    domainField.style.display = "";
+                    durationField.style.display = "";
+                    internshipProofField.style.display = "";
+
+
+                    /* Required internship details */
+
+                    companyInput.required = true;
+                    domainInput.required = true;
+                    durationInput.required = true;
+
+
+                    /*
+                     * PDF is required only when there is
+                     * no previously uploaded proof.
+                     */
+                    proofInput.required = !hasExistingProof;
+
+
+                } else {
+
+                    /* Hide fields */
+
+                    companyField.style.display = "none";
+                    domainField.style.display = "none";
+                    durationField.style.display = "none";
+                    internshipProofField.style.display = "none";
+
+
+                    /*
+                     * Remove required validation when
+                     * internship is No.
+                     */
+
+                    companyInput.required = false;
+                    domainInput.required = false;
+                    durationInput.required = false;
+                    proofInput.required = false;
+
+
+                    /*
+                     * Clear values when internship is No.
+                     *
+                     * This prevents old internship details
+                     * from accidentally being submitted.
+                     */
+
+                    companyInput.value = "";
+                    domainInput.value = "";
+                    durationInput.value = "";
+                    proofInput.value = "";
+
+                }
+
+            }
+
+
+            /*
+             * Run when the page loads.
+             *
+             * This also handles an existing student record.
+             */
+
+            updateInternshipFields();
+
+
+            /*
+             * Run whenever the student changes
+             * Internship Yes / No.
+             */
+
+            internshipSelect.addEventListener(
+                "change",
+                updateInternshipFields
+            );
+
+
+            /*
+             * Additional client-side validation.
+             */
+
+            form.addEventListener("submit", function (event) {
+
+                const hasInternship =
+                    internshipSelect.value === "Yes";
+
+
+                if (!hasInternship) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Validate internship company.
+                 */
+
+                if (companyInput.value.trim() === "") {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter the internship company / organization name."
+                    );
+
+                    companyInput.focus();
+
+                    return;
+
+                }
+
+
+                /*
+                 * Validate internship domain.
+                 */
+
+                if (domainInput.value.trim() === "") {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter your internship domain."
+                    );
+
+                    domainInput.focus();
+
+                    return;
+
+                }
+
+
+                /*
+                 * Validate duration.
+                 */
+
+                if (durationInput.value.trim() === "") {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter your internship duration."
+                    );
+
+                    durationInput.focus();
+
+                    return;
+
+                }
+
+
+                /*
+                 * Validate PDF.
+                 *
+                 * If an old proof exists, uploading another
+                 * PDF is optional.
+                 */
+
+                if (!hasExistingProof && !proofInput.files.length) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please upload your internship certificate / proof in PDF format."
+                    );
+
+                    proofInput.focus();
+
+                    return;
+
+                }
+
+
+                /*
+                 * If a file was selected, verify that it
+                 * is a PDF on the frontend as well.
+                 */
+
+                if (proofInput.files.length > 0) {
+
+                    const file =
+                        proofInput.files[0];
+
+                    const fileName =
+                        file.name.toLowerCase();
+
+                    const isPdf =
+                        file.type === "application/pdf" ||
+                        fileName.endsWith(".pdf");
+
+
+                    if (!isPdf) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Only PDF files are allowed for the internship certificate."
+                        );
+
+                        proofInput.value = "";
+
+                        proofInput.focus();
+
+                        return;
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

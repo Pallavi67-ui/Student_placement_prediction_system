@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Placement Prediction System | Machine Learning Portal</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Theme Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <i class="bi bi-mortarboard-fill"></i>
+                Placement Prediction System
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('home') }}">
+                            <i class="bi bi-house-door"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">
+                            <i class="bi bi-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">
+                            <i class="bi bi-box-arrow-in-right"></i> Student Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">
+                            <i class="bi bi-person-plus"></i> Register
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="btn-outline-gold py-1 px-3" style="font-size: 13.5px;" href="{{ url_for('admin_login') }}">
+                            <i class="bi bi-shield-lock-fill"></i> Admin Portal
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="home-hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <!-- LEFT COLUMN: TITLE, DESCRIPTION, CTAS -->
+                <div class="col-lg-7">
+                    <div class="hero-content">
+                        <div class="hero-badge">
+                            <i class="bi bi-cpu-fill"></i> Machine Learning Placement Intelligence
+                        </div>
+
+                        <h1 class="home-title">
+                            Student Placement<br>
+                            <span>Prediction System</span>
+                        </h1>
+
+                        <p class="home-description">
+                            Evaluate and enhance your academic profile, verbal communication, quantitative aptitude, and core technical preparation before attending campus placement interviews. Powered by trained Machine Learning models and intelligent multi-factor profiling.
+                        </p>
+
+                        <div class="home-buttons">
+                            <a href="{{ url_for('register') }}" class="home-btn">
+                                <i class="bi bi-rocket-takeoff-fill"></i>
+                                Get Started
+                            </a>
+                            <a href="{{ url_for('login') }}" class="btn-outline">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Student Login
+                            </a>
+                            <a href="{{ url_for('about') }}" class="btn-outline">
+                                <i class="bi bi-journal-text"></i>
+                                Learn More
+                            </a>
+                        </div>
+
+                        <!-- Mini Stats Pill Bar -->
+                        <div class="d-flex flex-wrap gap-4 mt-4 pt-3 border-top" style="border-color: rgba(212, 175, 55, 0.15) !important;">
+                            <div>
+                                <h3 class="mb-0 fw-bold" style="color: var(--gold-bright); font-family: 'Space Grotesk', sans-serif;">80%</h3>
+                                <small class="text-muted">ML Model Weight</small>
+                            </div>
+                            <div class="vr" style="background-color: rgba(212, 175, 55, 0.2);"></div>
+                            <div>
+                                <h3 class="mb-0 fw-bold" style="color: var(--gold-bright); font-family: 'Space Grotesk', sans-serif;">15+</h3>
+                                <small class="text-muted">Target Companies</small>
+                            </div>
+                            <div class="vr" style="background-color: rgba(212, 175, 55, 0.2);"></div>
+                            <div>
+                                <h3 class="mb-0 fw-bold" style="color: var(--gold-bright); font-family: 'Space Grotesk', sans-serif;">12</h3>
+                                <small class="text-muted">Technical Domains</small>
+                            </div>
+                            <div class="vr" style="background-color: rgba(212, 175, 55, 0.2);"></div>
+                            <div>
+                                <h3 class="mb-0 fw-bold" style="color: var(--gold-bright); font-family: 'Space Grotesk', sans-serif;">Instant</h3>
+                                <small class="text-muted">Weak Area Insights</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: PROFESSIONAL HIGHLIGHTS CARD (NO PHOTO) -->
+                <div class="col-lg-5">
+                    <div class="hero-highlights-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-uppercase" style="font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--gold-bright);">
+                                Evaluation Framework
+                            </span>
+                            <span class="badge" style="background: rgba(212, 175, 55, 0.15); color: var(--gold-bright); border: 1px solid var(--border-gold);">
+                                Hybrid Assessment
+                            </span>
+                        </div>
+
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="bi bi-mortarboard-fill"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h5>Academic Profile</h5>
+                                <p>CGPA, semester SGPA consistency, active backlogs, verified certifications, and internship records.</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="bi bi-chat-square-text-fill"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h5>Communication Assessment</h5>
+                                <p>Evaluates grammar, reading comprehension, vocabulary, and professional workplace communication.</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="bi bi-code-slash"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h5>Technical Skill Assessment</h5>
+                                <p>Tests programming logic, algorithms, computer science foundations, and code output prediction.</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="bi bi-building-gear"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h5>Company-Specific Preparation</h5>
+                                <p>Previous-pattern practice questions for top campus recruiters (TCS, Infosys, Amazon, Zoho, etc.).</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-item">
+                            <div class="highlight-icon">
+                                <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                            <div class="highlight-text">
+                                <h5>ML Placement Prediction</h5>
+                                <p>Computes probability and readiness classifications with targeted weakness recommendations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FEATURE SECTION ================= -->
+    <section class="container feature-section">
+        <div class="text-center mb-5">
+            <h2>Comprehensive Evaluation Capabilities</h2>
+            <p class="section-text">
+                Designed to guide college and engineering students step-by-step through their placement preparation journey with data-driven insights.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. Academic Evaluation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card text-center">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <h4>Academic Evaluation</h4>
+                    <p>
+                        Track your semester SGPA, cumulative CGPA, project portfolios, backlogs, and industry internships to gauge baseline eligibility.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. Communication Assessment -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card text-center">
+                    <i class="bi bi-chat-dots-fill"></i>
+                    <h4>Communication Assessment</h4>
+                    <p>
+                        Test verbal reasoning, professional email etiquette, situational judgement, and reading comprehension for HR interview rounds.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. Technical Assessment -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card text-center">
+                    <i class="bi bi-cpu-fill"></i>
+                    <h4>Technical Assessment</h4>
+                    <p>
+                        Evaluate core computer science fundamentals, data structures, OOP concepts, operating systems, and algorithmic thinking.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4. Aptitude Assessment -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card text-center">
+                    <i class="bi bi-calculator-fill"></i>
+                    <h4>Aptitude Assessment</h4>
+                    <p>
+                        Sharpen quantitative agility, number series, logical deductions, time-work speed, and probability problems for screening tests.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 5. Company-Based Preparation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card text-center">
+                    <i class="bi bi-building-check"></i>
+                    <h4>Company-Based Preparation</h4>
+                    <p>
+                        Practice company-oriented technical questions (MCQ, Output Prediction, Logic) tailored to TCS, Infosys, Amazon, Wipro, and more.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 6. ML-Based Placement Prediction -->
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card text-center">
+                    <i class="bi bi-robot"></i>
+                    <h4>ML-Based Placement Prediction</h4>
+                    <p>
+                        Combines a trained machine learning classification model with rule-based multi-factor profiling to output actionable readiness scores.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS SECTION ================= -->
+    <section class="how-it-works-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 style="font-family: 'Space Grotesk', sans-serif; font-weight: 700;">How It Works</h2>
+                <p class="section-text">
+                    A streamlined 7-step guided workflow from student registration to detailed technical feedback and prediction.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Step 1 -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number-gold">1</div>
+                        <h5>Register Account</h5>
+                        <p>Create your secure student account with register number, department, and contact info.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number-gold">2</div>
+                        <h5>Academic Details</h5>
+                        <p>Enter current semester, SGPA, CGPA, backlogs, projects, and internship credentials.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number-gold">3</div>
+                        <h5>Complete Assessments</h5>
+                        <p>Take multi-skill tests covering Communication, Programming, and Quantitative Aptitude.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number-gold">4</div>
+                        <h5>Select Target Company</h5>
+                        <p>Choose target recruiters like TCS, Infosys, Amazon, Accenture, or Zoho from the catalog.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number-gold">5</div>
+                        <h5>Analyze Technical Strengths</h5>
+                        <p>Attempt company questions (MCQ + Output Prediction) and automatically classify Strong, Moderate & Weak areas.</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="col-xl-4 col-lg-4 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number-gold">6</div>
+                        <h5>Placement Prediction</h5>
+                        <p>Receive your hybrid Machine Learning placement readiness score and readiness status badge.</p>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="col-xl-4 col-lg-4 col-md-12">
+                    <div class="step-card">
+                        <div class="step-number-gold">7</div>
+                        <h5>Improve Weak Areas</h5>
+                        <p>Follow personalized study recommendations and targeted topic guides to ace real placement interviews.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CALL TO ACTION ================= -->
+    <section class="container text-center cta-section">
+        <h2>Ready to Evaluate Your Placement Readiness?</h2>
+        <p>
+            Join the portal today, complete your multi-factor evaluations, practice company assessments, and unlock personalized placement preparation insights.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{{ url_for('register') }}" class="home-btn">
+                <i class="bi bi-person-plus-fill"></i>
+                Create Student Account
+            </a>
+            <a href="{{ url_for('login') }}" class="btn-outline">
+                <i class="bi bi-box-arrow-in-right"></i>
+                Sign In to Dashboard
+            </a>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <div class="container">
+            <p class="fw-semibold" style="color: var(--gold-bright);">Student Placement Prediction System Using Machine Learning</p>
+            <p>© 2026 Student Placement Portal. All Rights Reserved. Empowering Students. Enhancing Careers.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

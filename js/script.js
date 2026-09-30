@@ -1,0 +1,1 @@
+console.log("Student Placement Prediction System Loaded");

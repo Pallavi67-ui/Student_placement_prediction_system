@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Certification Verification | Student Placement Portal</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Theme Stylesheet -->
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg">
+
+        <div class="container">
+
+            <a class="navbar-brand"
+               href="{{ url_for('dashboard') }}">
+
+                <i class="bi bi-mortarboard-fill"></i>
+
+                Student Placement Portal
+
+            </a>
+
+
+            <div class="collapse navbar-collapse show">
+
+                <ul class="navbar-nav ms-auto align-items-center">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ url_for('dashboard') }}">
+
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ url_for('academics') }}">
+
+                            <i class="bi bi-book"></i>
+                            Academics
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link active"
+                           href="{{ url_for('certifications') }}">
+
+                            <i class="bi bi-patch-check"></i>
+                            Certifications
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                           href="{{ url_for('logout') }}">
+
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="page-header">
+
+        <div class="container">
+
+            <h1>Certification Verification</h1>
+
+            <p>
+                Step 2 of the Placement Readiness Evaluation.
+                Verify up to 5 industry certifications
+                (AWS, NPTEL, Coursera, Oracle, etc.)
+                to boost your profile score.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAIN SECTION ================= -->
+
+    <section class="academic-section">
+
+        <div class="container">
+
+            <div class="academic-container">
+
+
+                <!-- ================= WORKFLOW STEP INDICATOR ================= -->
+
+                <div class="workflow-badge-bar">
+
+                    <span class="workflow-step-pill completed">
+
+                        <i class="bi bi-check-circle-fill"></i>
+                        Academic Details
+
+                    </span>
+
+
+                    <span class="workflow-step-pill active">
+
+                        <i class="bi bi-2-circle-fill"></i>
+                        Certifications
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-3-circle"></i>
+                        Communication Test
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-4-circle"></i>
+                        Technical Test
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-5-circle"></i>
+                        Aptitude Test
+
+                    </span>
+
+
+                    <span class="workflow-step-pill">
+
+                        <i class="bi bi-6-circle"></i>
+                        Final Prediction
+
+                    </span>
+
+                </div>
+
+
+                <!-- ================= INFO NOTE ================= -->
+
+                <div class="info-note mb-4">
+
+                    <i class="bi bi-award-fill text-warning fs-5"></i>
+
+                    <div>
+
+                        <strong>Scoring Rule:</strong>
+
+                        Each verified industry certification
+                        contributes <strong>3 points</strong>
+                        to your Profile Rule Score
+                        (capped at 15 points total for 5 certifications).
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= FORM ================= -->
+
+                <form action="{{ url_for('certifications') }}"
+                      method="POST"
+                      id="certsForm"
+                      enctype="multipart/form-data">
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="error-box mb-4">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+
+                    <div id="certsContainer">
+
+                        <!-- Empty state when 0 certifications -->
+                        <div id="noCertsPrompt" class="text-center py-4 px-3 rounded mb-4" style="background: rgba(244, 185, 66, 0.05); border: 1px dashed var(--border-gold); {% if existing_certs %}display: none;{% endif %}">
+                            <i class="bi bi-patch-question fs-1 mb-2 d-block" style="color: var(--gold-bright);"></i>
+                            <h5 style="color: var(--gold-bright);">No Certifications Added</h5>
+                            <p class="text-secondary mb-0" style="font-size: 14px;">
+                                If you have completed industry certifications (AWS, NPTEL, Coursera, Oracle, etc.), click <strong>"Add Another Certification"</strong> below to add your details and upload the certificate PDF.
+                                <br>If you do not have any certifications, click <strong>"Skip (0 Certifications)"</strong> to proceed.
+                            </p>
+                        </div>
+
+                        <!-- ================= EXISTING CERTIFICATIONS ================= -->
+                        {% if existing_certs %}
+                            {% for cert in existing_certs %}
+                            <div class="cert-card"
+                                 id="cert_card_{{ loop.index }}"
+                                 data-has-proof="{{ 'true' if cert[6] else 'false' }}">
+
+                                <input type="hidden" name="db_cert_id[]" value="{{ cert[0] }}">
+
+                                <div class="cert-card-header">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
+                                        <span class="cert-number">
+                                            <i class="bi bi-patch-check-fill"></i>
+                                            Certification #{{ loop.index }}
+                                        </span>
+
+                                        {% if cert[7] == 'Verified' %}
+                                            <span class="badge bg-success" style="font-size: 11px;"><i class="bi bi-check-circle me-1"></i>Verified</span>
+                                        {% elif cert[7] == 'Rejected' %}
+                                            <span class="badge bg-danger" style="font-size: 11px;"><i class="bi bi-x-circle me-1"></i>Rejected</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark" style="font-size: 11px;"><i class="bi bi-clock me-1"></i>Pending</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <button type="button"
+                                            class="btn-remove-cert"
+                                            onclick="removeCert('cert_card_{{ loop.index }}')">
+                                        <i class="bi bi-trash me-1"></i>
+                                        Remove
+                                    </button>
+                                </div>
+
+                                <div class="form-grid">
+                                    <!-- CERTIFICATION NAME -->
+                                    <div>
+                                        <label class="form-label">
+                                            Certification Name <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                               name="cert_name[]"
+                                               class="form-control"
+                                               value="{{ cert[2] }}"
+                                               placeholder="e.g. AWS Certified Cloud Practitioner"
+                                               required>
+                                    </div>
+
+                                    <!-- ISSUING ORGANIZATION -->
+                                    <div>
+                                        <label class="form-label">
+                                            Issuing Organization <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                               name="cert_org[]"
+                                               class="form-control"
+                                               value="{{ cert[3] }}"
+                                               placeholder="e.g. AWS, NPTEL, Coursera, Oracle"
+                                               required>
+                                    </div>
+
+                                    <!-- YEAR -->
+                                    <div>
+                                        <label class="form-label">
+                                            Year of Completion <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="number"
+                                               name="cert_year[]"
+                                               class="form-control"
+                                               value="{{ cert[4] }}"
+                                               min="2018"
+                                               max="2026"
+                                               required>
+                                    </div>
+
+                                    <!-- CREDENTIAL ID -->
+                                    <div>
+                                        <label class="form-label">
+                                            Credential ID / Verification Code <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                               name="cert_id[]"
+                                               class="form-control"
+                                               value="{{ cert[5] }}"
+                                               placeholder="e.g. AWS-8923471-ABCD"
+                                               required>
+                                    </div>
+
+                                    <!-- ================= CERTIFICATE PDF ================= -->
+                                    <div>
+                                        <label class="form-label">
+                                            Certificate PDF <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="file"
+                                               name="cert_proof[]"
+                                               class="form-control"
+                                               accept=".pdf,application/pdf"
+                                               {% if not cert[6] %}required{% endif %}>
+                                        <small class="text-secondary" style="font-size: 12px;">
+                                            <i class="bi bi-file-earmark-pdf me-1"></i>
+                                            Upload your certificate in PDF format only.
+                                        </small>
+
+                                        {% if cert[6] %}
+                                        <div class="mt-2 p-2 rounded" style="background: rgba(212, 175, 55, 0.08); border: 1px solid var(--border-gold);">
+                                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                                <span style="font-size: 12px; color: var(--gold-bright);">
+                                                    <i class="bi bi-file-earmark-check-fill me-1"></i>Certificate Proof: <strong>Uploaded</strong>
+                                                </span>
+                                                <a href="{{ url_for('student_view_certification', cert_id=cert[0]) }}" target="_blank" style="font-size: 12px; color: var(--gold-bright); text-decoration: underline;">
+                                                    <i class="bi bi-box-arrow-up-right me-1"></i>View Uploaded PDF
+                                                </a>
+                                            </div>
+                                            <div class="mt-1" style="font-size: 11px; color: var(--muted-text);">
+                                                Uploading a new PDF replaces your existing proof and resets status to Pending.
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ================= ADD CERTIFICATION ================= -->
+                    <button type="button"
+                            class="btn-add-cert"
+                            id="addCertBtn"
+                            onclick="addCert()">
+                        <i class="bi bi-plus-circle"></i>
+                        Add Another Certification (Max 5)
+                    </button>
+
+                    <!-- ================= ACTION BUTTONS ================= -->
+                    <div class="assessment-actions">
+                        <div class="left-actions">
+                            <a href="{{ url_for('skip_certifications') }}"
+                               class="btn-skip"
+                               id="skipBtn"
+                               {% if existing_certs %}style="display: none;"{% endif %}>
+                                <i class="bi bi-skip-forward-fill"></i>
+                                Skip (0 Certifications)
+                            </a>
+                        </div>
+
+                        <div class="right-actions">
+                            <button type="submit"
+                                    class="continue-btn"
+                                    id="submitBtn"
+                                    {% if not existing_certs %}style="display: none;"{% endif %}>
+                                Save & Proceed to Communication Test
+                                <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="container">
+
+            <p>
+                © 2026 Student Placement Portal.
+                All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- ================= CERTIFICATION JAVASCRIPT ================= -->
+
+    <script>
+        let certCount = document.querySelectorAll('.cert-card').length;
+
+        /* ================= ADD CERTIFICATION ================= */
+        function addCert() {
+            const currentCards = document.querySelectorAll('.cert-card');
+            if (currentCards.length >= 5) {
+                alert('You can add a maximum of 5 certifications.');
+                return;
+            }
+
+            const container = document.getElementById('certsContainer');
+            const cardId = `cert_card_${Date.now()}`;
+            const newIndex = currentCards.length + 1;
+
+            const html = `
+                <div class="cert-card" id="${cardId}" data-has-proof="false">
+                    <input type="hidden" name="db_cert_id[]" value="0">
+
+                    <div class="cert-card-header">
+                        <span class="cert-number">
+                            <i class="bi bi-patch-check-fill"></i>
+                            Certification #${newIndex}
+                        </span>
+
+                        <button type="button"
+                                class="btn-remove-cert"
+                                onclick="removeCert('${cardId}')">
+                            <i class="bi bi-trash me-1"></i>
+                            Remove
+                        </button>
+                    </div>
+
+                    <div class="form-grid">
+                        <!-- CERTIFICATION NAME -->
+                        <div>
+                            <label class="form-label">
+                                Certification Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   name="cert_name[]"
+                                   class="form-control"
+                                   placeholder="e.g. Python for Data Science"
+                                   required>
+                        </div>
+
+                        <!-- ISSUING ORGANIZATION -->
+                        <div>
+                            <label class="form-label">
+                                Issuing Organization <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   name="cert_org[]"
+                                   class="form-control"
+                                   placeholder="e.g. Coursera, NPTEL, HackerRank"
+                                   required>
+                        </div>
+
+                        <!-- YEAR -->
+                        <div>
+                            <label class="form-label">
+                                Year of Completion <span class="text-danger">*</span>
+                            </label>
+                            <input type="number"
+                                   name="cert_year[]"
+                                   class="form-control"
+                                   value="2024"
+                                   min="2018"
+                                   max="2026"
+                                   required>
+                        </div>
+
+                        <!-- CREDENTIAL ID -->
+                        <div>
+                            <label class="form-label">
+                                Credential ID / Code <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   name="cert_id[]"
+                                   class="form-control"
+                                   placeholder="e.g. CERT-98214"
+                                   required>
+                        </div>
+
+                        <!-- ================= CERTIFICATE PDF ================= -->
+                        <div>
+                            <label class="form-label">
+                                Certificate PDF <span class="text-danger">*</span>
+                            </label>
+                            <input type="file"
+                                   name="cert_proof[]"
+                                   class="form-control cert-file-input"
+                                   accept=".pdf,application/pdf"
+                                   required>
+                            <small class="text-secondary" style="font-size: 12px;">
+                                <i class="bi bi-file-earmark-pdf me-1"></i>
+                                Upload your certificate in PDF format only.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', html);
+            renumber();
+        }
+
+        /* ================= REMOVE CERTIFICATION ================= */
+        function removeCert(id) {
+            const card = document.getElementById(id);
+            if (card) {
+                card.remove();
+                renumber();
+            }
+        }
+
+        /* ================= RENUMBER & TOGGLE CONTROLS ================= */
+        function renumber() {
+            const cards = document.querySelectorAll('.cert-card');
+            certCount = cards.length;
+
+            const noCertsPrompt = document.getElementById('noCertsPrompt');
+            const skipBtn = document.getElementById('skipBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const addButton = document.getElementById('addCertBtn');
+
+            if (certCount === 0) {
+                if (noCertsPrompt) noCertsPrompt.style.display = 'block';
+                if (skipBtn) skipBtn.style.display = 'inline-flex';
+                if (submitBtn) submitBtn.style.display = 'none';
+            } else {
+                if (noCertsPrompt) noCertsPrompt.style.display = 'none';
+                if (skipBtn) skipBtn.style.display = 'none';
+                if (submitBtn) submitBtn.style.display = 'inline-flex';
+            }
+
+            if (addButton) {
+                if (certCount >= 5) {
+                    addButton.style.display = 'none';
+                } else {
+                    addButton.style.display = 'inline-flex';
+                }
+            }
+
+            cards.forEach((card, index) => {
+                const title = card.querySelector('.cert-number');
+                if (title) {
+                    title.innerHTML = `<i class="bi bi-patch-check-fill"></i> Certification #${index + 1}`;
+                }
+            });
+        }
+
+        /* ================= INITIALIZE & FORM VALIDATION ================= */
+        document.addEventListener('DOMContentLoaded', function () {
+            renumber();
+
+            const form = document.getElementById('certsForm');
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    const cards = document.querySelectorAll('.cert-card');
+                    if (cards.length === 0) {
+                        event.preventDefault();
+                        alert("You have 0 certifications added. Please click 'Skip (0 Certifications)' to proceed.");
+                        return;
+                    }
+
+                    for (let i = 0; i < cards.length; i++) {
+                        const card = cards[i];
+                        const certNum = i + 1;
+                        const nameInput = card.querySelector('input[name="cert_name[]"]');
+                        const orgInput = card.querySelector('input[name="cert_org[]"]');
+                        const yearInput = card.querySelector('input[name="cert_year[]"]');
+                        const idInput = card.querySelector('input[name="cert_id[]"]');
+                        const proofInput = card.querySelector('input[name="cert_proof[]"]');
+                        const hasProof = card.getAttribute('data-has-proof') === 'true';
+
+                        if (!nameInput || !nameInput.value.trim()) {
+                            event.preventDefault();
+                            alert(`Please enter the certification name for Certification #${certNum}.`);
+                            if (nameInput) nameInput.focus();
+                            return;
+                        }
+
+                        if (!orgInput || !orgInput.value.trim()) {
+                            event.preventDefault();
+                            alert(`Please enter the issuing organization for Certification #${certNum}.`);
+                            if (orgInput) orgInput.focus();
+                            return;
+                        }
+
+                        if (!yearInput || !yearInput.value.trim()) {
+                            event.preventDefault();
+                            alert(`Please enter the year of completion for Certification #${certNum}.`);
+                            if (yearInput) yearInput.focus();
+                            return;
+                        }
+
+                        if (!idInput || !idInput.value.trim()) {
+                            event.preventDefault();
+                            alert(`Please enter the credential ID for Certification #${certNum}.`);
+                            if (idInput) idInput.focus();
+                            return;
+                        }
+
+                        // Check PDF requirement: either must already have proof or have a new file selected
+                        if (!hasProof && (!proofInput || !proofInput.files || proofInput.files.length === 0)) {
+                            event.preventDefault();
+                            alert(`Please upload the certificate PDF for Certification #${certNum}. Every certification requires a PDF document.`);
+                            if (proofInput) proofInput.focus();
+                            return;
+                        }
+
+                        // If a file is selected, ensure it is a PDF
+                        if (proofInput && proofInput.files && proofInput.files.length > 0) {
+                            const file = proofInput.files[0];
+                            const fileName = file.name.toLowerCase();
+                            const isPdf = file.type === "application/pdf" || fileName.endsWith(".pdf");
+                            if (!isPdf) {
+                                event.preventDefault();
+                                alert(`Certification #${certNum}: Only PDF files are allowed.`);
+                                proofInput.value = "";
+                                proofInput.focus();
+                                return;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
