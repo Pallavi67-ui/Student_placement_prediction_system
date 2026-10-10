@@ -856,16 +856,24 @@ def login():
 
 def load_student_session_data(student_id):
     """Helper to populate session with current student profile and saved assessment scores from DB."""
+    technical_assessment_completed = session.get(
+        "technical_assessment_completed",
+        False
+    )
     # Remove stale assessment values before loading current database state.
     for key in (
-        "communication_score", "technical_score", "technical_correct",
-        "technical_total", "prediction_score", "placement_status",
+        "communication_score", "prediction_score", "placement_status",
         "latest_company_result_id", "latest_company_name",
         "latest_company_score", "latest_company_strong", "latest_company_weak",
         "internship_proof", "internship_verification_status",
         "cert_total_count", "cert_verified_count", "cert_pending_count", "cert_rejected_count"
     ):
         session.pop(key, None)
+
+    if not technical_assessment_completed:
+        session.pop("technical_score", None)
+        session.pop("technical_correct", None)
+        session.pop("technical_total", None)
     conn = get_db_connection()
     if not conn:
         return
@@ -935,9 +943,16 @@ def load_student_session_data(student_id):
         if pred:
             session["prediction_score"] = float(pred[0])
             session["placement_status"] = pred[1]
-            session["technical_score"] = float(pred[2]) if pred[2] is not None else 0.0
-            session["technical_correct"] = int(pred[3]) if pred[3] is not None else 0
-            session["technical_total"] = int(pred[4]) if pred[4] is not None else 10
+            if not session.get("technical_assessment_completed", False):
+                session["technical_score"] = (
+                    float(pred[2]) if pred[2] is not None else 0.0
+                )
+                session["technical_correct"] = (
+                    int(pred[3]) if pred[3] is not None else 0
+                )
+                session["technical_total"] = (
+                    int(pred[4]) if pred[4] is not None else 10
+                )
 
         # Latest Company Assessment
         cursor.execute("""
@@ -1658,13 +1673,28 @@ def technical_assessment():
         else:
             tech_score = 0.0
 
+        print(
+            "[DEBUG TECH POST]",
+            tech_score,
+            correct_count,
+            total_questions
+        )
+
         session["technical_score"] = tech_score
         session["technical_correct"] = correct_count
         session["technical_total"] = total_questions
+        session["technical_assessment_completed"] = True
         session.pop("tech_qids", None)
 
-        return redirect(url_for('aptitude_assessment'))
+        print(
+            "[DEBUG TECH SESSION]",
+            session.get("technical_score"),
+            session.get("technical_correct"),
+            session.get("technical_total"),
+            session.get("technical_assessment_completed")
+        )
 
+        return redirect(url_for('aptitude_assessment'))
     selected_questions = []
     if conn:
         try:
@@ -1693,6 +1723,7 @@ def skip_technical_assessment():
     session["technical_score"] = 0.0
     session["technical_correct"] = 0
     session["technical_total"] = 10
+    session["technical_assessment_completed"] = True
     session.pop("tech_qids", None)
 
     return redirect(url_for('aptitude_assessment'))
@@ -2163,25 +2194,56 @@ def latest_company_result():
 def generate_recommendations(backlogs, certifications, technical_score, projects, communication_score, aptitude, cgpa):
     """Generate personalized recommendations based on student's performance factors."""
     suggestions = []
+
     if backlogs > 0:
-        suggestions.append("Prioritize clearing active backlogs to enhance academic eligibility for campus recruitment.")
-    if certifications < 2:
-        suggestions.append("Earn recognized industry certifications (e.g. AWS, NPTEL, Coursera) to strengthen your technical profile.")
+        suggestions.append(
+            "Prioritize clearing active backlogs to enhance academic eligibility for campus recruitment."
+        )
+
+    # Certification recommendation based on verified certification count
+    if certifications == 0:
+        suggestions.append(
+            "Earn a recognized industry certification (e.g. AWS, NPTEL, or Coursera) "
+            "to strengthen your technical profile."
+        )
+    elif certifications < 5:
+        suggestions.append(
+            f"You have {certifications} verified certification(s). "
+            "Consider earning more recognized certifications to strengthen your profile."
+        )
+
     if technical_score < 60:
-        suggestions.append("Strengthen core computer science foundations, algorithms, and practical programming languages (Python, Java, SQL).")
+        suggestions.append(
+            "Strengthen core computer science foundations, algorithms, and practical programming languages (Python, Java, SQL)."
+        )
+
     if projects < 2:
-        suggestions.append("Build more practical full-stack or domain projects to showcase demonstrable skills during interviews.")
+        suggestions.append(
+            "Build more practical full-stack or domain projects to showcase demonstrable skills during interviews."
+        )
+
     if communication_score < 70:
-        suggestions.append("Practice verbal articulation, technical explanations, and workplace communication to excel in HR & technical rounds.")
+        suggestions.append(
+            "Practice verbal articulation, technical explanations, and workplace communication to excel in HR & technical rounds."
+        )
+
     if aptitude < 60:
-        suggestions.append("Dedicate regular practice to quantitative problem solving, logical reasoning, and data interpretation speed.")
+        suggestions.append(
+            "Dedicate regular practice to quantitative problem solving, logical reasoning, and data interpretation speed."
+        )
+
     if cgpa < 7.0:
-        suggestions.append("Focus on lifting semester SGPA to achieve a cumulative CGPA of 7.0+ for top-tier company cutoffs.")
+        suggestions.append(
+            "Focus on lifting semester SGPA to achieve a cumulative CGPA of 7.0+ for top-tier company cutoffs."
+        )
 
     if not suggestions:
-        suggestions.append("Excellent overall preparation! Continue honing your programming, interview readiness, and soft skills.")
+        suggestions.append(
+            "Excellent overall preparation! Continue honing your programming, interview readiness, and soft skills."
+        )
 
     return suggestions
+
 
 
 @app.route('/prediction')
@@ -2205,12 +2267,78 @@ def prediction():
     certifications = int(session.get("certifications", 0) or 0)
     aptitude = int(session.get("aptitude", 60) or 60)
     communication_score = float(session.get("communication_score", 0.0) or 0.0)
+    
+    # Check verified internship and certifications
+    verified_internship = False
+    verified_certifications = 0
+
+    conn = None
+    cursor = None
+
+    try:
+        conn = get_db_connection()
+
+        if conn:
+            cursor = conn.cursor(buffered=True)
+
+            # Internship counts only if admin verified it
+            cursor.execute("""
+                SELECT internship, internship_verification_status
+                FROM academics
+                WHERE student_id = %s
+                LIMIT 1
+            """, (student_id,))
+
+            internship_row = cursor.fetchone()
+
+            if internship_row:
+                verified_internship = (
+                    internship_row[0] == "Yes"
+                    and internship_row[1] == "Verified"
+                )
+
+            # Count only verified certificates
+            cursor.execute("""
+                SELECT COUNT(*)
+                FROM student_certifications
+                WHERE student_id = %s
+                  AND verification_status = 'Verified'
+            """, (student_id,))
+
+            certification_row = cursor.fetchone()
+
+            if certification_row:
+                verified_certifications = int(
+                    certification_row[0] or 0
+                )
+
+    except Exception as e:
+        print(f"[Verification Score Error] {e}")
+        verified_internship = False
+        verified_certifications = 0
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+    certifications = verified_certifications
+
     technical_score = float(session.get("technical_score", 0.0) or 0.0)
     technical_correct = int(session.get("technical_correct", 0) or 0)
     technical_total = int(session.get("technical_total", 10) or 10)
 
+    print(
+        "[DEBUG BEFORE PREDICTION]",
+        session.get("technical_score"),
+        session.get("technical_correct"),
+        session.get("technical_total"),
+        session.get("technical_assessment_completed")
+    )
+    
     # Convert features for ML classification
-    internship_val = 1 if internship == "Yes" else 0
+    internship_val = 1 if verified_internship else 0
     communication_ml = round((communication_score / 100.0) * 10)
 
     # 1. Evaluate Machine Learning Probability using placement_model_old.pkl (80% weight)
@@ -2277,6 +2405,13 @@ def prediction():
             cursor.execute("SELECT prediction_id FROM prediction_results WHERE student_id=%s", (student_id,))
             existing = cursor.fetchone()
 
+            print(
+                "[DEBUG PREDICTION DB VALUES]",
+                technical_score,
+                technical_correct,
+                technical_total
+            )
+
             if existing:
                 cursor.execute("""
                     UPDATE prediction_results
@@ -2315,6 +2450,7 @@ def prediction():
                     certifications
                 ))
             conn.commit()
+            session.pop("technical_assessment_completed", None)
             cursor.close()
             conn.close()
         except Error as err:

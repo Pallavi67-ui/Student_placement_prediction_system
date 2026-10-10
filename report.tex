@@ -1,0 +1,2511 @@
+\documentclass[12pt,a4paper]{report}
+
+% =========================================================
+% PACKAGES
+% =========================================================
+
+\usepackage[
+    a4paper,
+    left=1in,
+    right=1in,
+    top=1in,
+    bottom=1in
+]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+\usetikzlibrary{
+    positioning,
+    arrows.meta,
+    shapes.geometric
+}
+
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{url}
+
+% =========================================================
+% GENERAL FORMATTING
+% =========================================================
+
+\linespread{1.3}
+
+\setlength{\parindent}{0.5in}
+\setlength{\parskip}{2pt}
+
+\setlist{
+    nosep,
+    leftmargin=*
+}
+
+\captionsetup{
+    font=small,
+    labelfont=bf
+}
+
+% =========================================================
+% CHAPTER / SECTION FORMATTING
+% =========================================================
+
+\titleformat{\chapter}[display]
+{\normalfont\bfseries\centering}
+{\Large CHAPTER \thechapter}
+{8pt}
+{\Large}
+
+\titlespacing*{\chapter}
+{0pt}
+{-15pt}
+{18pt}
+
+\titleformat{\section}
+{\large\bfseries}
+{\thesection}
+{1em}
+{}
+
+\titlespacing*{\section}
+{0pt}
+{10pt}
+{5pt}
+
+\titleformat{\subsection}
+{\normalsize\bfseries}
+{\thesubsection}
+{1em}
+{}
+
+\titlespacing*{\subsection}
+{0pt}
+{7pt}
+{3pt}
+
+% =========================================================
+% HYPERLINK SETTINGS
+% =========================================================
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black,
+    pdftitle={
+        Student Placement Prediction System Using Machine Learning
+    },
+    pdfauthor={
+        Pallavikrishna B
+    }
+}
+
+% =========================================================
+% HEADER AND FOOTER
+% =========================================================
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% =========================================================
+% TABLE COLUMN
+% =========================================================
+
+\newcolumntype{Y}{
+    >{\raggedright\arraybackslash}X
+}
+
+% =========================================================
+% CODE LISTING SETTINGS
+% =========================================================
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=6pt,
+    showstringspaces=false,
+    tabsize=4,
+    captionpos=b
+}
+
+% =========================================================
+% IMAGE COMMAND
+% All images are in the same folder as this .tex file.
+% =========================================================
+
+\newcommand{\projectfigure}[3]{%
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{#1}{%
+        \includegraphics[
+            width=#2\textwidth,
+            height=0.40\textheight,
+            keepaspectratio
+        ]{#1}%
+    }{%
+        \fbox{%
+            \parbox[c][3.8cm][c]{0.78\textwidth}{%
+                \centering
+                Figure placeholder\\[3pt]
+                \texttt{#1}
+            }
+        }%
+    }
+    \caption{#3}
+\end{figure}
+}
+
+% =========================================================
+% DOCUMENT
+% =========================================================
+
+\begin{document}
+
+% =========================================================
+% PRELIMINARY PAGES
+% No visible page numbers
+% =========================================================
+
+\pagenumbering{roman}
+\pagestyle{empty}
+
+% =========================================================
+% TITLE PAGE
+% =========================================================
+
+\begin{titlepage}
+
+\centering
+
+% ---------------------------------------------------------
+% College Name
+% ---------------------------------------------------------
+
+\vspace*{0.3cm}
+
+{\large\textbf{RAJIV GANDHI INSTITUTE OF TECHNOLOGY}}
+
+\vspace{0.15cm}
+
+{\large\textbf{GOVERNMENT ENGINEERING COLLEGE}}
+
+\vspace{0.15cm}
+
+{\large\textbf{KOTTAYAM - 686 501}}
+
+\vspace{0.35cm}
+
+% ---------------------------------------------------------
+% College Logo
+% ---------------------------------------------------------
+
+\IfFileExists{image.png}{
+    \includegraphics[
+        width=0.20\textwidth
+    ]{image.png}
+}
+
+\vspace{0.45cm}
+
+% ---------------------------------------------------------
+% Department
+% ---------------------------------------------------------
+
+{\normalsize\textbf{DEPARTMENT OF COMPUTER APPLICATIONS}}
+
+\vspace{0.35cm}
+
+{\small 20MCA245 - MINI PROJECT}
+
+\vspace{0.45cm}
+
+% ---------------------------------------------------------
+% Project Title
+% ---------------------------------------------------------
+
+{\normalsize\textbf{STUDENT PLACEMENT PREDICTION SYSTEM}}
+
+\vspace{0.15cm}
+
+{\small USING MACHINE LEARNING}
+
+\vspace{0.65cm}
+
+% ---------------------------------------------------------
+% Submitted By
+% ---------------------------------------------------------
+
+{\small Submitted By}
+
+\vspace{0.15cm}
+
+{\normalsize\textbf{PALLAVIKRISHNA B}}
+
+\vspace{0.15cm}
+
+{\small\textbf{KTE25MCA2042}}
+
+\vspace{0.7cm}
+
+% ---------------------------------------------------------
+% Guide
+% ---------------------------------------------------------
+
+{\small Under the Guidance of}
+
+\vspace{0.15cm}
+
+{\normalsize\textbf{Prof. JASSIM RAFEEK}}
+
+\vspace{0.5cm}
+
+% ---------------------------------------------------------
+% KTU Logo
+% ---------------------------------------------------------
+
+\IfFileExists{ktu.png}{
+    \includegraphics[
+        width=0.16\textwidth
+    ]{ktu.png}
+}
+
+\vfill
+
+% ---------------------------------------------------------
+% University
+% ---------------------------------------------------------
+
+{\small APJ ABDUL KALAM TECHNOLOGICAL UNIVERSITY}
+
+\vspace{0.15cm}
+
+{\small THIRUVANANTHAPURAM}
+
+\vspace{0.3cm}
+
+{\small October 2026}
+
+\end{titlepage}
+
+% =========================================================
+% CERTIFICATE PAGE
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+
+\vspace*{0.55cm}
+
+% Department
+{\normalsize\textbf{DEPARTMENT OF COMPUTER APPLICATIONS}}
+
+\vspace{0.65cm}
+
+% College
+{\large\textbf{RAJIV GANDHI INSTITUTE OF TECHNOLOGY}}
+
+\vspace{0.05cm}
+
+{\large\textbf{KOTTAYAM}}
+
+\vspace{0.55cm}
+
+% RIT Logo
+\IfFileExists{image.png}{
+    \includegraphics[
+        width=0.19\textwidth
+    ]{image.png}
+}
+
+\vspace{1.05cm}
+
+% Certificate heading
+{\normalsize\textbf{CERTIFICATE}}
+
+\end{center}
+
+\vspace{0.35cm}
+
+% ---------------------------------------------------------
+% Certificate text
+% ---------------------------------------------------------
+
+\noindent
+This is to certify that the project entitled
+\textbf{``STUDENT PLACEMENT PREDICTION SYSTEM USING MACHINE
+LEARNING''} is a bonafide work carried out by
+\textbf{PALLAVIKRISHNA B} (Register No:
+\textbf{KTE25MCA2042}) during the academic year
+\textbf{2025 - 2026} in partial fulfillment of the requirements
+for the award of the degree of
+\textbf{Master of Computer Applications} of
+\textbf{APJ Abdul Kalam Technological University,
+Thiruvananthapuram, Kerala.}
+
+\vspace{2.0cm}
+
+% ---------------------------------------------------------
+% Signature Section
+% ---------------------------------------------------------
+
+\vspace{1.5cm}
+
+\noindent
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}ll}
+
+\begin{tabular}[t]{l}
+\textbf{Prof. Jassim Rafeek}\\
+(Project Guide)\\
+Assistant Professor\\
+Dept of Computer Applications
+\end{tabular}
+&
+\begin{tabular}[t]{r}
+\textbf{Dr. Vineetha S}\\
+Head of Department\\
+Dept of Computer Applications
+\end{tabular}
+
+\end{tabular*}
+
+\newpage
+
+% =========================================================
+% DECLARATION
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+    {\large\textbf{DECLARATION}}
+\end{center}
+
+\vspace{0.45cm}
+
+\noindent
+I, undersigned hereby declare that the project report entitled
+\textbf{``STUDENT PLACEMENT PREDICTION SYSTEM USING MACHINE
+LEARNING''}, submitted for partial fulfillment of the requirements
+for the award of the degree of Master of Computer Applications of
+the APJ Abdul Kalam Technological University, Kerala is a bonafide
+work done by me under the supervision of my mentor,
+\textbf{Prof. JASSIM RAFEEK}. This submission represents my ideas
+in my own words and where ideas or words of others have been
+included, I have adequately and accurately cited and referenced
+the original sources. I also declare that I have adhered to the
+ethics of academic honesty and integrity and have not
+misrepresented or fabricated any data or idea or fact or source in
+my submission. I understand that any violation of the above will
+be a cause for disciplinary action by the institute and / or the
+University and can also evoke penal action from the sources which
+have thus not been properly cited or from whom proper permission
+has not been obtained. This report has not been previously formed
+as the basis for the award of any degree, diploma, or similar
+title of any other University.
+
+\vspace{3.8cm}
+
+\noindent
+Place: Kottayam
+\hfill
+\textbf{PALLAVIKRISHNA B}
+
+\vspace{0.35cm}
+
+\noindent
+Date: 01/10/2026
+
+\newpage
+
+% =========================================================
+% ACKNOWLEDGEMENT
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+    {\large\textbf{ACKNOWLEDGEMENT}}
+\end{center}
+
+\vspace{0.45cm}
+
+\noindent
+I want to express my gratitude to everyone who has supported me
+throughout the endeavour. First and foremost, I give thanks to
+God Almighty for His mercy and blessings, for without His
+unexpected direction, this would still be only a dream.
+
+\vspace{0.15cm}
+
+\noindent
+I sincerely thank \textbf{Dr. Prince A}, Principal, Rajiv Gandhi
+Institute of Technology, Kottayam, for providing the environment
+in which this project could be completed.
+
+\vspace{0.15cm}
+
+\noindent
+I express my sincere gratitude to \textbf{Dr. Vineetha S}, Head
+of the Department of Computer Applications, for granting
+permission and providing the necessary support for the successful
+completion of this project.
+
+\vspace{0.15cm}
+
+\noindent
+I am deeply grateful to my Project Guide,
+\textbf{Prof. Jassim Rafeek}, Assistant Professor, Department of
+Computer Applications, for his valuable guidance, continuous
+support, constructive suggestions, and encouragement throughout
+the project.
+
+\vspace{0.15cm}
+
+\noindent
+My heartfelt thanks to my project coordinator,
+\textbf{Dr. Reena Murali}, Associate Professor, Department of
+Computer Applications, for her constructive suggestions and
+inspiration throughout the project.
+
+\vspace{0.15cm}
+
+\noindent
+Finally, I would like to take this chance to express my gratitude
+to the faculty and technical staff of the Department of Computer
+Applications.
+
+\vspace{1.2cm}
+
+\begin{flushright}
+    \textbf{PALLAVIKRISHNA B}
+\end{flushright}
+
+% =========================================================
+% ABSTRACT
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\begin{center}
+    {\large\textbf{ABSTRACT}}
+\end{center}
+
+\vspace{0.45cm}
+
+\noindent
+The placement process is an important part of a student's
+academic journey. Traditional placement evaluation generally
+depends on academic performance, skills, certifications,
+communication abilities, technical knowledge, projects, and
+other student-related factors. Manual evaluation of these
+factors can be time-consuming and may not provide a consistent
+way of estimating a student's placement readiness.
+
+\vspace{0.15cm}
+
+\noindent
+The proposed \textbf{Student Placement Prediction System Using
+Machine Learning} is a web-based application developed to
+provide an automated prediction of a student's placement
+readiness. The system collects academic information,
+certifications, communication assessment results, technical
+assessment results, project information, and other relevant
+student details.
+
+\vspace{0.15cm}
+
+\noindent
+A Random Forest classification algorithm is used as the machine
+learning model. The system uses a dataset containing approximately
+10,000 records for model development. The trained model achieved
+an accuracy of approximately \textbf{91.9\%} during evaluation.
+The trained model is stored as
+\texttt{placement\_model\_old.pkl} and loaded by the Flask
+application during prediction.
+
+\vspace{0.15cm}
+
+\noindent
+In addition to machine learning prediction, the system uses
+rule-based evaluation. The final prediction is calculated using
+an \textbf{80\% machine learning score and 20\% rule-based score}.
+Based on the resulting score, students are classified into four
+categories: High, Medium, Developing, and Low.
+
+\vspace{0.15cm}
+
+\noindent
+The system also includes student registration and login,
+academic information management, certification verification,
+communication assessment, technical assessment, company-related
+assessment, prediction generation, and result display. The
+application is developed using HTML, CSS, JavaScript, Python,
+Flask, MySQL, and Scikit-learn.
+
+\vspace{0.15cm}
+
+\noindent
+The proposed system provides an integrated platform for
+collecting student information and generating an automated
+placement prediction that can be used as a supportive tool for
+students and administrators.
+
+% =========================================================
+% TABLE OF CONTENTS
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\tableofcontents
+
+% =========================================================
+% LIST OF FIGURES
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\listoffigures
+
+% =========================================================
+% LIST OF TABLES
+% =========================================================
+
+\newpage
+\thispagestyle{empty}
+
+\listoftables
+
+% =========================================================
+% START ARABIC PAGE NUMBERING FROM INTRODUCTION
+% =========================================================
+
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+% =========================================================
+% CHAPTER 1
+% =========================================================
+
+\chapter{INTRODUCTION}
+
+The placement process serves as a pivotal bridge transitioning students from
+academic institutions into the professional software and technology industries.
+Higher education institutions continually seek dependable mechanisms to assess
+student readiness and provide targeted intervention before campus recruitment
+drives commence. In modern recruitment, placement evaluation is multidimensional,
+encompassing academic consistency, core technical capabilities, communicative
+proficiency, and verified co-curricular achievements. Machine learning offers
+powerful data-driven techniques to identify underlying patterns within
+historical recruitment records and forecast the placement likelihood of current
+students. This project presents the Student Placement Prediction System, a
+comprehensive web-based platform that combines machine learning classification
+with rule-based evaluation to deliver accurate, multi-category placement
+readiness assessments and structured guidance for students and academic
+mentors.
+
+\section{Introduction}
+
+Campus placement is an important activity in higher education
+institutions. It provides students with opportunities to begin
+their professional careers after completing their academic
+programmes. Student placement readiness depends on several
+factors including academic performance, technical knowledge,
+communication skills, certifications, projects, and participation
+in different assessments.
+
+Traditional placement evaluation often involves collecting
+student information manually and evaluating individual factors
+separately. With the increasing availability of student data,
+machine learning can be used to identify patterns in historical
+placement data and generate predictions for new students.
+
+The proposed project develops a web-based Student Placement
+Prediction System that combines a machine learning model with
+rule-based evaluation. The application provides a centralized
+platform for collecting student information and generating
+placement readiness predictions.
+
+
+\section{Problem Statement}
+
+Students possess different levels of academic performance,
+technical knowledge, communication skills, certifications,
+projects, and other attributes. A system is therefore required
+to collect these factors and use them to provide an automated
+placement prediction.
+
+The problem addressed by this project is the development of a
+web-based system capable of collecting relevant student data,
+processing the data, applying machine learning and rule-based
+logic, and presenting the resulting placement readiness
+category.
+
+
+\section{Scope}
+
+The scope of the project includes:
+
+\begin{itemize}
+    \item student registration and authentication;
+    \item collection of academic details;
+    \item collection and verification of certifications;
+    \item communication skill assessment;
+    \item technical assessment;
+    \item company-related information and assessment;
+    \item machine learning based prediction;
+    \item rule-based score calculation;
+    \item hybrid prediction;
+    \item prediction result display;
+    \item administrative management.
+\end{itemize}
+
+\section{Relevance}
+
+The system is relevant to students and educational institutions
+because it provides a structured method for evaluating multiple
+placement-related factors.
+
+Students can use the system to understand how different factors
+contribute to their placement readiness. Administrators can use
+the system to manage student information and assessment results.
+
+The system is intended as a supportive prediction tool and not
+as a replacement for actual recruitment decisions.
+
+\section{Objectives}
+
+The main objectives of the project are:
+
+\begin{enumerate}
+    \item To develop a web-based student placement prediction
+    system.
+
+    \item To collect academic, certification, communication,
+    technical, and project-related information.
+
+    \item To train a Random Forest machine learning model using
+    placement-related data.
+
+    \item To implement rule-based evaluation for selected
+    student attributes.
+
+    \item To combine machine learning and rule-based scores
+    using a hybrid prediction approach.
+
+    \item To classify students into different placement readiness
+    categories.
+
+    \item To provide an easy-to-use interface for students and
+    administrators.
+\end{enumerate}
+
+
+\section{Organization of the Report}
+
+The report is organized into seven chapters.
+
+Chapter 1 introduces the project, its background, motivation,
+scope, objectives, and contributions.
+
+Chapter 2 discusses the system study, existing system, literature
+review, identified gap, proposed system, feasibility, and
+requirements.
+
+Chapter 3 presents the development methodology, Agile approach,
+development stages, testing strategy, and risk management.
+
+Chapter 4 explains the system design, architecture, activity
+design, database design, system flowchart, modules, and data flow.
+
+Chapter 5 describes the implementation of the frontend, backend,
+database, machine learning model, assessments, certification
+verification, and prediction modules.
+
+Chapter 6 presents the results, testing, machine learning
+analysis, hybrid prediction analysis, and system performance.
+
+Chapter 7 concludes the project and discusses possible future
+enhancements.
+
+% =========================================================
+% CHAPTER 2
+% =========================================================
+
+\chapter{SYSTEM STUDY AND REQUIREMENT ANALYSIS}
+
+A thorough system study and requirement analysis form the foundation for
+designing an effective educational assessment platform. This chapter
+investigates the traditional procedures employed in campus placement
+evaluations, highlighting their limitations in handling multi-faceted student
+data and providing timely, automated feedback. To address these operational
+constraints, a modern, automated Student Placement Prediction System is
+proposed. The chapter further examines the technical, economic, and
+operational feasibility of the proposed application, followed by an exhaustive
+analysis of the functional, non-functional, software, and hardware requirements
+essential for robust deployment.
+
+\section{Existing System}
+
+Traditional placement evaluation systems mainly depend on manual
+collection and analysis of student information. Academic
+performance may be considered separately from communication
+skills, technical skills, certifications, and projects.
+
+In many cases, students are required to maintain their
+information in different documents or platforms. Placement
+officers may also need to manually review and compare student
+records.
+
+Such approaches can make the evaluation process time-consuming
+and may not provide an integrated prediction mechanism.
+
+\section{Limitations of Existing System}
+
+The major limitations include:
+
+\begin{itemize}
+    \item Manual collection of student information.
+    \item Separate evaluation of different skill areas.
+    \item Time-consuming analysis of student records.
+    \item Limited use of historical placement data.
+    \item Lack of an integrated prediction mechanism.
+    \item Difficulty in maintaining large numbers of student
+    records manually.
+    \item Limited personalized feedback to students.
+\end{itemize}
+
+
+\section{Proposed System}
+
+The proposed system is a web-based Student Placement Prediction
+System that integrates a Flask application, MySQL database, and
+Random Forest machine learning model.
+
+The system follows the following general process:
+
+\begin{enumerate}
+    \item Student registration and login.
+    \item Collection of student details.
+    \item Collection of academic information.
+    \item Certification submission and verification.
+    \item Communication assessment.
+    \item Technical assessment.
+    \item Collection of relevant company assessment information.
+    \item Machine learning prediction.
+    \item Rule-based score calculation.
+    \item Hybrid score generation.
+    \item Final prediction classification.
+    \item Result display.
+\end{enumerate}
+
+\section{Development Methodology}
+
+The project follows an iterative development approach. The system
+was developed by dividing the work into manageable modules such
+as authentication, academic details, certifications,
+assessments, prediction, and administration.
+
+Each module was developed and tested before integration with the
+complete system.
+
+\section{Feasibility Study}
+
+\subsection{Technical Feasibility}
+
+The system uses commonly available technologies such as Python,
+Flask, MySQL, HTML, CSS, JavaScript, and Scikit-learn. Therefore,
+the system can be developed and executed on a standard computer.
+
+\subsection{Economic Feasibility}
+
+The major software technologies used in the project are freely
+available. The system does not require specialized hardware for
+basic development and testing.
+
+\subsection{Operational Feasibility}
+
+The application provides a web-based interface through which
+students and administrators can interact with the system.
+Therefore, the proposed system can be operated without requiring
+specialized technical knowledge from normal users.
+
+\section{Requirement Analysis}
+
+\subsection{Functional Requirements}
+
+The functional requirements include:
+
+\begin{itemize}
+    \item User registration.
+    \item User login.
+    \item Student profile management.
+    \item Academic information entry.
+    \item Certification submission.
+    \item Certification verification.
+    \item Communication assessment.
+    \item Technical assessment.
+    \item Company assessment.
+    \item Machine learning prediction.
+    \item Rule-based scoring.
+    \item Hybrid prediction.
+    \item Result display.
+    \item Administrative management.
+\end{itemize}
+
+\subsection{Non-Functional Requirements}
+
+The major non-functional requirements are:
+
+\begin{itemize}
+    \item Usability.
+    \item Reliability.
+    \item Maintainability.
+    \item Security.
+    \item Performance.
+    \item Scalability.
+\end{itemize}
+
+\subsection{Software Requirements}
+
+\begin{table}[H]
+\centering
+\caption{Software Requirements}
+
+\begin{tabularx}{\textwidth}{p{0.30\textwidth}Y}
+\toprule
+\textbf{Software} & \textbf{Purpose} \\
+\midrule
+Python & Backend and machine learning development \\
+Flask & Web application framework \\
+MySQL & Database management \\
+HTML & Web page structure \\
+CSS & Web page styling \\
+JavaScript & Client-side interaction \\
+Scikit-learn & Machine learning implementation \\
+Pandas & Dataset processing \\
+NumPy & Numerical operations \\
+Git & Version control \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Hardware Requirements}
+
+The system can be developed using a standard personal computer
+with:
+\begin{itemize}
+    \item Minimum 4 GB RAM.
+    \item Dual-core or higher processor.
+    \item Sufficient storage for development tools and datasets.
+    \item Internet connection for downloading packages and
+    deployment-related activities.
+\end{itemize}
+
+% =========================================================
+% CHAPTER 3
+% =========================================================
+
+\chapter{DEVELOPMENT METHODOLOGY}
+
+Developing an integrated web application that couples predictive machine
+learning algorithms with interactive user interfaces necessitates a structured,
+responsive software development methodology. This chapter outlines the
+iterative Agile-Scrum framework adopted throughout the lifecycle of the
+Student Placement Prediction System. By decomposing the overall application
+into manageable product backlog items---ranging from user authentication and
+academic records management to assessment engines and prediction
+pipelines---the system was engineered through phased, incremental iterations.
+The chapter also details the development stages, multi-level testing
+strategies, and risk mitigation protocols employed to guarantee application
+reliability and code quality.
+
+\section{Introduction}
+
+The project was developed using an iterative methodology. The
+application was divided into different functional modules and
+developed incrementally.
+
+This approach made it possible to test individual components
+before integrating them into the complete application.
+
+\section{Agile and Scrum}
+
+Agile development focuses on iterative development and continuous
+improvement. The proposed project follows Agile principles by
+dividing the development process into smaller tasks.
+
+The major activities include:
+
+\begin{itemize}
+    \item Requirement identification.
+    \item System design.
+    \item Module development.
+    \item Database development.
+    \item Machine learning model development.
+    \item Integration.
+    \item Testing.
+    \item Refinement.
+\end{itemize}
+
+\section{Product Backlog}
+
+\begin{table}[H]
+\centering
+\caption{Major Product Backlog Items}
+
+\begin{tabularx}{\textwidth}{p{0.12\textwidth}p{0.35\textwidth}Y}
+\toprule
+\textbf{No.} & \textbf{Task} & \textbf{Description} \\
+\midrule
+1 & Authentication & Registration and login functionality \\
+2 & Student Details & Collection of personal information \\
+3 & Academics & Collection of academic performance \\
+4 & Certifications & Certification submission and verification \\
+5 & Communication & Communication skill assessment \\
+6 & Technical & Technical assessment \\
+7 & Prediction & Machine learning and hybrid prediction \\
+8 & Administration & Administrative management \\
+9 & Testing & Functional and integration testing \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Development Stages}
+
+The project was developed through the following stages:
+
+\begin{enumerate}
+    \item Requirement analysis.
+    \item System architecture design.
+    \item Database design.
+    \item Frontend development.
+    \item Backend development.
+    \item Machine learning model development.
+    \item Module integration.
+    \item Testing.
+    \item Final refinement.
+\end{enumerate}
+
+\section{Development Process}
+
+The frontend was developed using HTML, CSS, and JavaScript.
+The backend was implemented using Python and Flask.
+
+MySQL was used for persistent storage of student and assessment
+information.
+
+The machine learning component was developed using Scikit-learn.
+The Random Forest model was trained using historical placement
+data and saved using Python pickle.
+
+\section{Testing Strategy}
+
+Testing was performed at different levels:
+
+\begin{itemize}
+    \item Unit testing.
+    \item Functional testing.
+    \item Database testing.
+    \item Integration testing.
+    \item User interface testing.
+    \item Machine learning model testing.
+\end{itemize}
+
+\section{Risk Management}
+
+Possible risks identified during development included:
+
+\begin{itemize}
+    \item Incorrect database connectivity.
+    \item Invalid user input.
+    \item Missing certification files.
+    \item Machine learning model loading errors.
+    \item Incorrect score calculation.
+    \item Frontend-backend integration problems.
+\end{itemize}
+
+These risks were reduced through validation, modular
+development, error handling, and repeated testing.
+
+% =========================================================
+% CHAPTER 4
+% =========================================================
+
+\chapter{SYSTEM DESIGN}
+
+System design translates the functional and non-functional requirements into a
+cohesive architectural and data model. This chapter elaborates on the structural
+and behavioral design of the Student Placement Prediction System. A robust
+three-tier architecture is established to delineate presentation, application
+logic, and data storage layers. The chapter presents the detailed activity
+flows, entity relationships, database schema, and system flowchart governing
+user interactions. In addition, the modular decomposition of authentication,
+profile management, assessment administration, and hybrid prediction calculation
+is described, illustrating the complete data progression from input submission
+to classification output.
+
+\section{Introduction}
+
+System design describes the architecture, modules, database,
+workflow, and interactions of the proposed Student Placement
+Prediction System.
+
+\section{System Architecture}
+
+The system follows a three-layer architecture consisting of the
+presentation layer, application layer, and data/model layer.
+
+\begin{itemize}
+    \item \textbf{Presentation Layer:} HTML, CSS and JavaScript
+    provide the user interface.
+
+    \item \textbf{Application Layer:} Flask handles application
+    logic, routing, authentication, assessment processing, and
+    prediction.
+
+    \item \textbf{Data and Model Layer:} MySQL stores application
+    data and the trained Random Forest model performs machine
+    learning prediction.
+\end{itemize}
+
+\projectfigure
+{system_architecture_colored.png}
+{0.80}
+{System Architecture of the Student Placement Prediction System}
+
+\section{Activity Design}
+
+The main activities of the system include registration, login,
+student details, academic information, certification verification,
+communication assessment, technical assessment, aptitude/company
+assessment, prediction, and result display.
+
+\projectfigure
+{activity_design_colored.png}
+{0.80}
+{Activity Design of the Student Placement Prediction System}
+
+\section{Database Design}
+
+The database is designed to store student information,
+academic details, certifications, assessment results, and
+prediction-related information.
+
+MySQL is used as the relational database management system.
+
+\projectfigure
+{database_design.png}
+{0.78}
+{Database Design of the Student Placement Prediction System}
+
+\section{System Flowchart}
+
+The overall system flow begins with user registration or login.
+After authentication, the student enters the required information,
+completes the assessments, and submits the information for
+prediction.
+
+\projectfigure
+{system_flowchart.png}
+{0.78}
+{System Flowchart of the Student Placement Prediction System}
+
+\section{Module Design}
+
+The major modules are:
+
+\subsection{Authentication Module}
+
+This module handles student registration and login. User
+credentials are validated before access to the student dashboard
+is provided.
+
+\subsection{Student Information Module}
+
+This module collects personal and academic information required
+for the prediction system.
+
+\subsection{Certification Module}
+
+Students can submit up to five certifications. Certification
+documents are uploaded for verification.
+
+Each verified certification contributes 3 points, with a maximum
+certification score of 15.
+
+\subsection{Communication Assessment Module}
+
+The communication assessment contains 10 multiple-choice
+questions.
+
+The questions are divided into:
+
+\begin{itemize}
+    \item Grammar.
+    \item Vocabulary.
+    \item Reading.
+    \item Professional communication.
+    \item Situational communication.
+\end{itemize}
+
+Each section contains two questions, with each question carrying
+2 marks.
+
+\subsection{Technical Assessment Module}
+
+The technical assessment contains 10 multiple-choice questions
+related to technical knowledge.
+
+\subsection{Prediction Module}
+
+The prediction module receives the required input features and
+passes them to the trained Random Forest model.
+
+A rule-based score is also calculated. The final score is
+calculated using the hybrid prediction formula.
+
+\section{Data Flow}
+
+The general data flow is:
+
+\begin{center}
+\textbf{
+Student Input
+$\rightarrow$
+Flask Backend
+$\rightarrow$
+Validation
+$\rightarrow$
+MySQL / ML Model
+$\rightarrow$
+Hybrid Prediction
+$\rightarrow$
+Result
+}
+\end{center}
+
+\section{Prediction Categories}
+
+The final prediction score is classified into four categories.
+
+\begin{table}[H]
+\centering
+\caption{Prediction Categories}
+
+\begin{tabular}{p{0.30\textwidth}
+                p{0.30\textwidth}
+                p{0.25\textwidth}}
+\toprule
+\textbf{Category} & \textbf{Score Range} & \textbf{Meaning} \\
+\midrule
+High & $\geq 75$ & Higher placement readiness score \\
+Medium & $50$--$74.99$ & Moderate placement readiness score \\
+Developing & $35$--$49.99$ & Developing placement readiness score \\
+Low & $<35$ & Lower placement readiness score \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =========================================================
+% CHAPTER 5
+% =========================================================
+
+\chapter{IMPLEMENTATION}
+
+The implementation phase brings together the architectural specifications,
+software frameworks, database structures, and machine learning models into an
+operational web platform. This chapter details the technical realisation of
+the frontend interfaces using HTML5, CSS3, and JavaScript, alongside the backend
+web services built using Python and the Flask framework. It describes the
+integration with the MySQL relational database, the implementation of dynamic
+communication and technical assessment modules, and the verification pipeline
+for student certifications. Furthermore, the chapter covers the training,
+serialization, loading, and evaluation of the Random Forest machine learning
+classifier, as well as the implementation of the hybrid scoring algorithm that
+combines predictive probabilities with rule-based assessment scores.
+
+\section{Introduction}
+
+The proposed system was implemented as a web application using
+HTML, CSS, JavaScript, Python, Flask, MySQL, and Scikit-learn.
+
+The implementation consists of frontend pages, backend routes,
+database operations, assessment modules, certification
+verification, machine learning prediction, and administrative
+functionality.
+
+\section{Frontend}
+
+The frontend was developed using HTML, CSS, and JavaScript.
+
+The interface provides pages for:
+
+\begin{itemize}
+    \item Registration.
+    \item Login.
+    \item Student details.
+    \item Academic details.
+    \item Dashboard.
+    \item Certification verification.
+    \item Communication assessment.
+    \item Aptitude assessment.
+    \item Company assessment.
+    \item Technical assessment.
+    \item Prediction.
+    \item Result display.
+\end{itemize}
+
+The interface was designed to provide a consistent user
+experience across the different modules.
+
+\section{Frontend Components}
+
+\begin{table}[H]
+\centering
+\caption{Frontend Components}
+
+\begin{tabularx}{\textwidth}{p{0.32\textwidth}Y}
+\toprule
+\textbf{Technology / Component} & \textbf{Purpose} \\
+\midrule
+HTML & Structure of web pages \\
+CSS & Styling and page layout \\
+JavaScript & Client-side interaction and validation \\
+Forms & Collection of student information \\
+MCQ Interface & Communication and technical assessments \\
+Result Interface & Display of prediction score and category \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Backend}
+
+Python and Flask were used to implement the backend.
+
+The backend is responsible for:
+
+\begin{itemize}
+    \item handling HTTP requests;
+    \item validating input;
+    \item managing sessions;
+    \item communicating with MySQL;
+    \item processing assessment results;
+    \item loading the machine learning model;
+    \item calculating hybrid prediction;
+    \item rendering result pages.
+\end{itemize}
+
+\section{Backend Components}
+
+\begin{table}[H]
+\centering
+\caption{Backend Components}
+
+\begin{tabularx}{\textwidth}{p{0.35\textwidth}Y}
+\toprule
+\textbf{Component} & \textbf{Purpose} \\
+\midrule
+Flask & Web application framework \\
+Python & Application and prediction logic \\
+MySQL Connector & Database communication \\
+Scikit-learn & Machine learning model \\
+Pickle & Saving and loading trained model \\
+Session Management & Maintaining logged-in user information \\
+Validation & Checking submitted input \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Application Routes}
+
+The major application routes include:
+
+\begin{table}[H]
+\centering
+\caption{Major Application Routes}
+
+\begin{tabularx}{\textwidth}{p{0.38\textwidth}Y}
+\toprule
+\textbf{Route / Module} & \textbf{Purpose} \\
+\midrule
+/register & Student registration \\
+/login & Student authentication \\
+/dashboard & Student dashboard \\
+/academics & Academic details \\
+/certifications & Certification information \\
+/company\_selection & Company/domain selection \\
+/communication & Communication assessment \\
+/technical\_assessment & Technical assessment \\
+/prediction & Final prediction \\
+/admin & Administrative functions \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Authentication and Student Information}
+
+The registration module allows a student to create an account.
+The login module validates the credentials and establishes a
+session.
+
+After login, the student can access the dashboard and complete
+the required information.
+
+\section{Certification Verification}
+
+The system allows students to submit up to five certifications.
+
+Each certification contains information such as certification
+name and uploaded document.
+
+The administrator can verify or reject submitted certifications.
+
+The available statuses are:
+
+\begin{itemize}
+    \item Pending.
+    \item Verified.
+    \item Rejected.
+\end{itemize}
+
+Each verified certification contributes 3 points and the total
+certification score is capped at 15.
+
+\section{Communication Assessment}
+
+The communication assessment contains 10 MCQs.
+
+The question distribution is:
+
+\begin{table}[H]
+\centering
+\caption{Communication Assessment Structure}
+
+\begin{tabular}{p{0.45\textwidth}
+                p{0.25\textwidth}
+                p{0.20\textwidth}}
+\toprule
+\textbf{Section} & \textbf{Questions} & \textbf{Marks} \\
+\midrule
+Grammar & 2 & 4 \\
+Vocabulary & 2 & 4 \\
+Reading & 2 & 4 \\
+Professional & 2 & 4 \\
+Situational & 2 & 4 \\
+\midrule
+\textbf{Total} & \textbf{10} & \textbf{20} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Skipped questions receive zero marks.
+
+\section{Technical Assessment}
+
+The technical assessment contains 10 randomly selected
+multiple-choice questions.
+
+The result is converted into the required technical score used
+by the prediction module.
+
+\section{Dataset}
+
+The machine learning model was developed using a dataset
+containing approximately 10,000 student-related records.
+
+The dataset contains features representing different academic,
+skill, project, and placement-related attributes.
+
+The dataset is divided into training and testing data.
+
+A test size of 20\% is used in the model training process.
+
+\section{Random Forest Model}
+
+Random Forest is an ensemble machine learning algorithm that
+combines multiple decision trees.
+
+The model was implemented using
+\texttt{RandomForestClassifier} from Scikit-learn.
+
+The model uses:
+
+\begin{itemize}
+    \item Random Forest classification.
+    \item \texttt{random\_state = 42}.
+    \item 80\% training data.
+    \item 20\% testing data.
+\end{itemize}
+
+The evaluated model achieved approximately \textbf{91.9\%}
+accuracy.
+
+\begin{equation}
+Accuracy =
+\frac{\text{Correct Predictions}}
+{\text{Total Predictions}}
+\times 100
+\end{equation}
+
+\section{Model Loading}
+
+The trained model is saved in the file
+\texttt{placement\_model\_old.pkl}.
+
+The Flask application loads this model when prediction is
+required.
+
+\section{Feature Importance}
+
+Feature importance is used to understand the relative contribution
+of input features in the Random Forest model.
+
+The major feature importance values observed in the project are:
+
+\begin{table}[H]
+\centering
+\caption{Selected Feature Importance Values}
+
+\begin{tabular}{p{0.55\textwidth}p{0.25\textwidth}}
+\toprule
+\textbf{Feature} & \textbf{Importance} \\
+\midrule
+Communication & 0.2418 \\
+CGPA & 0.1732 \\
+Previous Semester Performance & 0.1501 \\
+Projects & 0.1297 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These values represent the feature importance values obtained
+from the trained Random Forest model.
+
+\section{Rule-Based Prediction}
+
+In addition to the machine learning model, the system applies
+rule-based evaluation.
+
+The rule-based component incorporates selected explicit
+conditions and scores, including certification verification and
+assessment-related factors.
+
+\section{Hybrid Prediction}
+
+The final prediction is calculated using a hybrid approach.
+
+The machine learning component contributes 80\% and the
+rule-based component contributes 20\%.
+
+The formula is:
+
+\[
+P_{\text{final}} =
+0.80P_{\text{ML}} +
+0.20P_{\text{Rules}}
+\]
+
+where:
+
+\begin{itemize}
+    \item $P_{\text{final}}$ is the final prediction score.
+    \item $P_{\text{ML}}$ is the machine learning score.
+    \item $P_{\text{Rules}}$ is the rule-based score.
+\end{itemize}
+
+\section{Prediction Classification}
+
+The final score is classified as follows:
+
+\begin{itemize}
+    \item High: score $\geq 75$.
+    \item Medium: score $\geq 50$ and $<75$.
+    \item Developing: score $\geq 35$ and $<50$.
+    \item Low: score $<35$.
+\end{itemize}
+
+\section{Result Page}
+
+The result page displays the final prediction score and category.
+
+The page provides the student with a clear representation of the
+prediction generated from the submitted information.
+
+\section{Administrative Module}
+
+The administrative module allows authorized users to manage
+student-related information.
+
+Administrative functions include:
+
+\begin{itemize}
+    \item viewing student information;
+    \item checking submitted certifications;
+    \item verifying certifications;
+    \item rejecting certifications;
+    \item reviewing assessment results;
+    \item accessing prediction-related information.
+\end{itemize}
+
+% =========================================================
+% CHAPTER 6
+% =========================================================
+
+\chapter{TESTING AND ANALYSIS}
+
+Verification and performance analysis are critical to ascertain that the
+integrated system behaves reliably under realistic conditions and produces
+accurate predictive assessments. This chapter presents the systematic testing
+methodologies applied across individual modules and the unified application,
+covering user authentication, data persistence, assessment scoring, and end-to-end
+workflow execution. Subsequently, a rigorous analytical evaluation of the
+trained Random Forest classifier is presented, detailing model accuracy,
+training-testing splits, and feature importance distributions. Finally, the
+chapter evaluates the efficacy of the hybrid prediction approach, which
+harmonises algorithmic pattern discovery with explicit educational evaluation
+rules.
+
+\section{Introduction}
+
+The developed Student Placement Prediction System was tested
+module by module and then as an integrated application.
+
+The testing focused on authentication, database operations,
+student information, certifications, assessments, prediction,
+and result display.
+
+\section{Complete System Workflow}
+
+The complete system workflow is:
+
+\begin{enumerate}
+    \item Student registration.
+    \item Student login.
+    \item Student details entry.
+    \item Academic details entry.
+    \item Certification submission.
+    \item Certification verification.
+    \item Communication assessment.
+    \item Technical assessment.
+    \item Company-related assessment.
+    \item Prediction processing.
+    \item Hybrid score calculation.
+    \item Prediction category generation.
+    \item Result display.
+\end{enumerate}
+
+\section{Functional Testing}
+
+Functional testing was performed to verify whether each major
+system function worked according to its requirements.
+
+\begin{table}[H]
+\centering
+\caption{Functional Testing}
+
+\begin{tabularx}{\textwidth}
+{p{0.27\textwidth}p{0.42\textwidth}Y}
+\toprule
+\textbf{Module} & \textbf{Test} & \textbf{Expected Result} \\
+\midrule
+Registration & Submit valid student details &
+Account created successfully \\
+
+Login & Enter valid credentials &
+Student dashboard displayed \\
+
+Academics & Submit academic details &
+Details stored successfully \\
+
+Certification & Upload certificate &
+Certificate stored for verification \\
+
+Communication & Complete MCQs &
+Communication score calculated \\
+
+Technical & Complete technical questions &
+Technical score calculated \\
+
+Prediction & Submit all required inputs &
+Prediction generated \\
+
+Result & Open result page &
+Final score and category displayed \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Authentication Testing}
+
+Authentication testing was carried out to verify registration,
+login, validation, and session handling.
+
+\begin{table}[H]
+\centering
+\caption{Authentication Testing}
+
+\begin{tabularx}{\textwidth}{p{0.35\textwidth}Y}
+\toprule
+\textbf{Test Case} & \textbf{Result} \\
+\midrule
+Valid registration & Successful \\
+Duplicate registration & Validation applied \\
+Valid login & Successful \\
+Invalid login & Error displayed \\
+Logout & Session terminated \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Database Testing}
+
+Database testing was performed to verify insertion, retrieval,
+updating, and storage of student-related information.
+
+The database was checked for:
+
+\begin{itemize}
+    \item student details;
+    \item academic details;
+    \item certification records;
+    \item assessment scores;
+    \item prediction-related information.
+\end{itemize}
+
+\section{Assessment Testing}
+
+Communication and technical assessments were tested using
+different combinations of correct, incorrect, and skipped
+responses.
+
+The system correctly assigns marks based on the submitted
+responses. Skipped communication questions receive zero marks.
+
+\section{Machine Learning Result}
+
+The Random Forest model was trained using approximately 10,000
+records.
+
+The evaluated accuracy was approximately:
+
+\[
+\boxed{91.9\%}
+\]
+
+The model was saved as:
+
+\begin{center}
+\texttt{placement\_model\_old.pkl}
+\end{center}
+
+The saved model is loaded by the Flask backend during prediction.
+
+\section{Feature Analysis}
+
+The major feature importance values obtained from the model were:
+
+\begin{table}[H]
+\centering
+\caption{Feature Analysis}
+
+\begin{tabular}{p{0.55\textwidth}p{0.25\textwidth}}
+\toprule
+\textbf{Feature} & \textbf{Importance} \\
+\midrule
+Communication & 0.2418 \\
+CGPA & 0.1732 \\
+Previous Semester Performance & 0.1501 \\
+Projects & 0.1297 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The values indicate the relative contribution of these features
+within the trained Random Forest model.
+
+\section{Hybrid Prediction Analysis}
+
+The hybrid prediction combines the machine learning score and
+rule-based score.
+
+\[
+P_{\text{final}} =
+0.80P_{\text{ML}} +
+0.20P_{\text{Rules}}
+\]
+
+The use of a hybrid approach allows the system to incorporate
+both patterns learned from the dataset and explicit application
+rules.
+
+\section{Prediction Categories}
+
+The final prediction categories are:
+
+\begin{table}[H]
+\centering
+\caption{Final Prediction Categories}
+
+\begin{tabular}{p{0.30\textwidth}p{0.35\textwidth}}
+\toprule
+\textbf{Category} & \textbf{Final Score} \\
+\midrule
+High & $\geq 75$ \\
+Medium & $50$--$74.99$ \\
+Developing & $35$--$49.99$ \\
+Low & $<35$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{System Performance}
+
+The integrated system was tested by completing the complete
+student workflow from registration to final prediction.
+
+The frontend, backend, database, assessment, and prediction
+components were integrated and tested together.
+
+The system successfully provides:
+
+\begin{itemize}
+    \item student authentication;
+    \item data collection;
+    \item certification management;
+    \item assessment processing;
+    \item machine learning prediction;
+    \item hybrid prediction;
+    \item result generation.
+\end{itemize}
+
+\section{Advantages}
+
+The proposed system provides:
+
+\begin{itemize}
+    \item Automated placement readiness prediction.
+    \item Centralized student information.
+    \item Integration of academic and skill-related factors.
+    \item Certification verification and scoring.
+    \item Machine learning based prediction.
+    \item Rule-based evaluation.
+    \item Hybrid prediction mechanism.
+    \item Web-based accessibility.
+    \item Structured result presentation.
+\end{itemize}
+
+\section{Limitations}
+
+The current implementation has certain limitations:
+
+\begin{itemize}
+    \item Prediction quality depends on the quality and
+    representativeness of the training dataset.
+
+    \item The current model uses a fixed trained model.
+
+    \item The prediction categories are based on predefined
+    thresholds.
+
+    \item The system does not currently provide company-specific
+    prediction for every organization.
+
+    \item Continuous automatic model retraining is not currently
+    implemented.
+\end{itemize}
+
+% =========================================================
+% CHAPTER 7
+% =========================================================
+
+\chapter{CONCLUSION AND FUTURE SCOPE}
+
+The successful design, implementation, and evaluation of the Student Placement
+Prediction System validate the effectiveness of integrating machine learning
+models with interactive web applications in educational environments. This
+chapter summarises the technical achievements of the project, including the
+automated aggregation of student academic and assessment metrics, high-accuracy
+Random Forest classification, and balanced hybrid prediction scoring. It reviews
+the advantages offered by the system as an objective decision-support mechanism
+for students and academic institutions, acknowledges current operational
+limitations, and outlines prospective avenues for future enhancement such as
+larger cross-institutional datasets, explainable AI, and cloud deployment.
+
+\section{Conclusion}
+
+The \textbf{Student Placement Prediction System Using Machine
+Learning} was developed as a web-based application for automated
+placement readiness prediction.
+
+The system integrates student information, academic performance,
+certifications, communication skills, technical skills, and
+assessment results into a single platform.
+
+A Random Forest classification model was developed using
+approximately 10,000 records. The model achieved an evaluated
+accuracy of approximately 91.9\%.
+
+The system also implements a hybrid prediction mechanism in which
+80\% of the final score is obtained from the machine learning
+component and 20\% from rule-based evaluation.
+
+The final score is classified into High, Medium, Developing, and
+Low categories.
+
+The project demonstrates the integration of machine learning with
+a Flask web application and MySQL database. The resulting system
+provides a structured platform for collecting student information,
+conducting assessments, managing certifications, and generating
+placement readiness predictions.
+
+\section{Future Scope}
+
+The system can be enhanced in several ways.
+
+\subsection{Larger Dataset}
+
+The model can be trained using a larger and more diverse dataset
+containing placement records from multiple academic institutions
+and recruitment cycles.
+
+\subsection{Additional Machine Learning Algorithms}
+
+Additional classification algorithms can be implemented and
+evaluated, such as:
+
+\begin{itemize}
+    \item Logistic Regression.
+    \item Decision Tree.
+    \item Support Vector Machine.
+    \item Gradient Boosting.
+    \item XGBoost.
+\end{itemize}
+
+\subsection{Explainable Prediction}
+
+Future versions can provide explanations for individual
+predictions by showing how different features contributed to the
+result.
+
+\subsection{Personalized Recommendations}
+
+The system can provide personalized suggestions based on areas
+where a student may need further preparation.
+
+\subsection{Company-Specific Prediction}
+
+The prediction system can be extended to consider specific
+company requirements and job roles.
+
+\subsection{Cloud Deployment}
+
+The application can be deployed on cloud platforms to make it
+accessible through the Internet.
+
+\subsection{Advanced Administrative Dashboard}
+
+The administrative dashboard can be enhanced with charts,
+statistics, filtering, and reporting features.
+
+\subsection{Automated Model Retraining}
+
+The system can be extended to automatically retrain the machine
+learning model using newly collected placement data.
+
+\section{Final Remarks}
+
+The project demonstrates how machine learning, web technologies,
+and database systems can be integrated to develop an educational
+decision-support application.
+
+The proposed system provides a foundation that can be further
+extended with additional data, improved prediction techniques,
+explainability, personalized recommendations, and cloud-based
+deployment.
+
+% =========================================================
+% REFERENCES
+% =========================================================
+
+\clearpage
+
+\renewcommand{\bibname}{References}
+
+\addcontentsline{toc}{chapter}{References}
+
+\begin{thebibliography}{99}
+
+\bibitem{breiman}
+L. Breiman,
+``Random Forests,''
+\textit{Machine Learning},
+Vol. 45, pp. 5--32, 2001.
+
+\url{https://doi.org/10.1023/A:1010933404324}
+
+\bibitem{sklearn}
+Scikit-learn Developers,
+\textit{Scikit-learn: Machine Learning in Python}.
+
+\url{https://scikit-learn.org/stable/}
+
+\bibitem{randomforest}
+Scikit-learn Documentation,
+\textit{RandomForestClassifier Documentation}.
+
+\url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}
+
+\bibitem{flask}
+Pallets Projects,
+\textit{Flask Documentation}.
+
+\url{https://flask.palletsprojects.com/}
+
+\bibitem{python}
+Python Software Foundation,
+\textit{Python Documentation}.
+
+\url{https://docs.python.org/3/}
+
+\bibitem{mysql}
+Oracle,
+\textit{MySQL 8.4 Reference Manual}.
+
+\url{https://dev.mysql.com/doc/refman/8.4/en/}
+
+\bibitem{javascript}
+MDN Web Docs,
+\textit{JavaScript Documentation}.
+
+\url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}
+
+\bibitem{pandas}
+Pandas Development Team,
+\textit{Pandas Documentation}.
+
+\url{https://pandas.pydata.org/docs/}
+
+\bibitem{numpy}
+NumPy Developers,
+\textit{NumPy Documentation}.
+
+\url{https://numpy.org/doc/}
+
+\bibitem{mlbook}
+T. Hastie, R. Tibshirani, and J. Friedman,
+\textit{The Elements of Statistical Learning},
+Springer.
+
+\url{https://hastie.su.domains/ElemStatLearn/}
+
+\bibitem{hands}
+A. G\'{e}ron,
+\textit{Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow},
+O'Reilly Media.
+
+\end{thebibliography}
+
+% =========================================================
+% APPENDIX A
+% =========================================================
+
+\clearpage
+
+\chapter*{APPENDIX A: GIT COMMIT SCREENSHOT}
+
+\addcontentsline{toc}{section}{Appendix A: Git Commit Screenshot}
+
+The following screenshot shows the Git commit and repository
+information of the project.
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{git1.png}{
+        \includegraphics[
+            width=0.85\textwidth,
+            height=0.48\textheight,
+            keepaspectratio
+        ]{git1.png}
+    }{
+        \fbox{
+            \parbox[c][5cm][c]{0.80\textwidth}{
+                \centering
+                git1.png not found
+            }
+        }
+    }
+    \caption{Git Commit Screenshot}
+\end{figure}
+
+% =========================================================
+% APPENDIX B
+% =========================================================
+
+\clearpage
+
+\chapter*{APPENDIX B: SYSTEM SCREENSHOTS}
+
+\addcontentsline{toc}{section}{Appendix B: System Screenshots}
+
+\section*{Login Page}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{login.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{login.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                login.png not found
+            }
+        }
+    }
+    \caption{Login Page}
+\end{figure}
+
+\vspace{0.2cm}
+
+\section*{Registration Page}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{register.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{register.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                register.png not found
+            }
+        }
+    }
+    \caption{Registration Page}
+\end{figure}
+
+\clearpage
+
+\section*{Academic Details Page}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{academics.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{academics.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                academics.png not found
+            }
+        }
+    }
+    \caption{Academic Details Page}
+\end{figure}
+
+\vspace{0.2cm}
+
+\section*{Dashboard}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{dashboard.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{dashboard.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                dashboard.png not found
+            }
+        }
+    }
+    \caption{Student Dashboard}
+\end{figure}
+
+\clearpage
+
+\section*{Communication Assessment}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{communication.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{communication.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                communication.png not found
+            }
+        }
+    }
+    \caption{Communication Assessment Page}
+\end{figure}
+
+\vspace{0.2cm}
+
+\section*{Aptitude Assessment}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{aptitude.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{aptitude.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                aptitude.png not found
+            }
+        }
+    }
+    \caption{Aptitude Assessment Page}
+\end{figure}
+
+\clearpage
+
+\section*{Company Assessment}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{company_assessment.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{company_assessment.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                company_assessment.png not found
+            }
+        }
+    }
+    \caption{Company Assessment Page}
+\end{figure}
+
+\vspace{0.2cm}
+
+\section*{Technical Assessment}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{technical.png}{
+        \includegraphics[
+            width=0.68\textwidth,
+            height=0.30\textheight,
+            keepaspectratio
+        ]{technical.png}
+    }{
+        \fbox{
+            \parbox[c][3.2cm][c]{0.70\textwidth}{
+                \centering
+                technical.png not found
+            }
+        }
+    }
+    \caption{Technical Assessment Page}
+\end{figure}
+
+\clearpage
+
+\section*{Prediction Page}
+
+\begin{figure}[!htbp]
+    \centering
+    \IfFileExists{prediction.png}{
+        \includegraphics[
+            width=0.75\textwidth,
+            height=0.38\textheight,
+            keepaspectratio
+        ]{prediction.png}
+    }{
+        \fbox{
+            \parbox[c][4cm][c]{0.75\textwidth}{
+                \centering
+                prediction.png not found
+            }
+        }
+    }
+    \caption{Final Prediction Page}
+\end{figure}
+
+% =========================================================
+% APPENDIX C
+% =========================================================
+
+\clearpage
+
+\chapter*{APPENDIX C: SAMPLE CODE}
+
+\addcontentsline{toc}{section}{Appendix C: Sample Code}
+
+\section*{C.1 Random Forest Model Training}
+
+\begin{lstlisting}[caption={Random Forest Model Training}]
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+import pickle
+
+data = pd.read_csv("placement_dataset.csv")
+
+X = data.drop("Placement", axis=1)
+y = data["Placement"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.20,
+    random_state=42
+)
+
+model = RandomForestClassifier(
+    random_state=42
+)
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
+
+print("Accuracy:", accuracy)
+
+with open(
+    "placement_model_old.pkl",
+    "wb"
+) as file:
+
+    pickle.dump(model, file)
+
+print("Model saved successfully.")
+\end{lstlisting}
+
+\vspace{0.3cm}
+
+\section*{C.2 Loading the Trained Model}
+
+\begin{lstlisting}[caption={Loading the Trained Model}]
+import pickle
+
+with open(
+    "placement_model_old.pkl",
+    "rb"
+) as file:
+
+    model = pickle.load(file)
+\end{lstlisting}
+
+\clearpage
+
+\section*{C.3 Hybrid Prediction}
+
+\begin{lstlisting}[caption={Hybrid Prediction Logic}]
+ml_score = prediction_score
+
+rule_score = rule_based_score
+
+final_score = (
+    0.80 * ml_score
+    + 0.20 * rule_score
+)
+
+if final_score >= 75:
+
+    prediction = "High"
+
+elif final_score >= 50:
+
+    prediction = "Medium"
+
+elif final_score >= 35:
+
+    prediction = "Developing"
+
+else:
+
+    prediction = "Low"
+
+print("Final Score:", final_score)
+print("Prediction:", prediction)
+\end{lstlisting}
+
+\vspace{0.3cm}
+
+\section*{C.4 Flask Application}
+
+\begin{lstlisting}[caption={Basic Flask Application Structure}]
+from flask import Flask
+from flask import render_template
+from flask import request
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+
+    return render_template(
+        "index.html"
+    )
+
+@app.route(
+    "/login",
+    methods=["GET", "POST"]
+)
+def login():
+
+    # Authentication logic
+
+    return render_template(
+        "login.html"
+    )
+
+@app.route(
+    "/prediction",
+    methods=["GET", "POST"]
+)
+def prediction():
+
+    # Prediction processing
+
+    return render_template(
+        "prediction.html"
+    )
+
+if __name__ == "__main__":
+
+    app.run(
+        debug=True
+    )
+\end{lstlisting}
+
+\clearpage
+
+\section*{C.5 MySQL Database Connection}
+
+\begin{lstlisting}[caption={MySQL Database Connection}]
+import mysql.connector
+
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="your_password",
+    database="placement_prediction"
+)
+
+cursor = connection.cursor()
+
+print(
+    "Database connected successfully"
+)
+\end{lstlisting}
+
+\vspace{0.3cm}
+
+\section*{C.6 Certification Score Calculation}
+
+\begin{lstlisting}[caption={Certification Score Calculation}]
+verified_count = 0
+
+for certificate in certificates:
+
+    if certificate["status"] == "Verified":
+
+        verified_count += 1
+
+certification_score = (
+    verified_count * 3
+)
+
+if certification_score > 15:
+
+    certification_score = 15
+\end{lstlisting}
+
+\vspace{0.3cm}
+
+\section*{C.7 Prediction Category Classification}
+
+\begin{lstlisting}[caption={Prediction Category Classification}]
+if final_score >= 75:
+
+    category = "High"
+
+elif final_score >= 50:
+
+    category = "Medium"
+
+elif final_score >= 35:
+
+    category = "Developing"
+
+else:
+
+    category = "Low"
+\end{lstlisting}
+
+% =========================================================
+% END OF DOCUMENT
+% =========================================================
+
+\end{document}
